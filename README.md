@@ -9,6 +9,8 @@ Requires **Bun >= 1.1**.
 | id | route |
 |----|-------|
 | `lower-third` | `/graphics/p/dtv-2026/lower-third` |
+| `talent-single` | `/graphics/p/dtv-2026/talent-single` |
+| `talent-double` | `/graphics/p/dtv-2026/talent-double` |
 
 ## Setup
 
@@ -47,7 +49,13 @@ After install:
 
 ```
 /graphics/p/dtv-2026/lower-third?preview=1
+/graphics/p/dtv-2026/talent-single?preview=1
+/graphics/p/dtv-2026/talent-double?preview=1
 ```
+
+## Porting graphics
+
+See [docs/PORTING.md](docs/PORTING.md) for the checklist when bringing templates over from `dtv-graphics-2026` (talent single/double are the reference ports).
 
 ## GSAP playout (porting from SPX / dtv-graphics-2026)
 

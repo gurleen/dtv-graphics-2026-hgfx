@@ -1,5 +1,7 @@
 import { definePackage, defineTemplate } from '@hydra-tv/hydra-gfx-sdk'
 import { lowerThirdTemplateSchema } from './templates/lower-third/schema'
+import { talentSingleTemplateSchema } from './templates/talent/single/schema'
+import { talentDoubleTemplateSchema } from './templates/talent/double/schema'
 
 export default definePackage({
   id: 'dtv-2026',
@@ -11,6 +13,18 @@ export default definePackage({
       Render: () => import('./templates/lower-third/Graphic'),
       Controls: () => import('./templates/lower-third/Controls'),
       PreviewControls: () => import('./templates/lower-third/Controls'),
+    }),
+    defineTemplate({
+      ...talentSingleTemplateSchema,
+      Render: () => import('./templates/talent/single/Graphic'),
+      Controls: () => import('./templates/talent/single/Controls'),
+      PreviewControls: () => import('./templates/talent/single/Controls'),
+    }),
+    defineTemplate({
+      ...talentDoubleTemplateSchema,
+      Render: () => import('./templates/talent/double/Graphic'),
+      Controls: () => import('./templates/talent/double/Controls'),
+      PreviewControls: () => import('./templates/talent/double/Controls'),
     }),
   ],
 })
