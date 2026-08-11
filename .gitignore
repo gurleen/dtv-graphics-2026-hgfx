@@ -1,0 +1,5 @@
+node_modules/
+dist/
+*.hgfx.js
+.DS_Store
+*.log
