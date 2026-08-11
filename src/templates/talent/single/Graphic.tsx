@@ -11,13 +11,13 @@ import {
 } from '../shared'
 import type { TalentSingleProps } from './schema'
 
-function animation(timeline: gsap.core.Timeline) {
+function animation(timeline: gsap.core.Timeline, root: HTMLElement) {
   timeline
     .from('#text-box', { y: 100, opacity: 0, duration: 0.3, ease: 'circ.out' })
     .from('#first-name', { y: 100, opacity: 0, duration: 0.3, ease: 'circ.out' }, '<0.1')
     .from('#last-name', { y: 100, opacity: 0, duration: 0.3, ease: 'circ.out' }, '<0.1')
     .addPause()
-    .to('#talent-root', { opacity: 0, duration: 0.3, ease: 'circ.out' })
+    .to(root, { opacity: 0, duration: 0.3, ease: 'circ.out' })
 }
 
 export default function TalentSingleGraphic({
@@ -29,7 +29,6 @@ export default function TalentSingleGraphic({
   return (
     <HtmlCanvas>
       <div
-        id="talent-root"
         ref={scope}
         style={{ width: '100%', height: '100%', fontFamily: TALENT_FONT }}
       >

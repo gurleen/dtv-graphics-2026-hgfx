@@ -13,7 +13,7 @@ import {
 } from '../shared'
 import type { TalentDoubleProps } from './schema'
 
-function animation(timeline: gsap.core.Timeline) {
+function animation(timeline: gsap.core.Timeline, root: HTMLElement) {
   timeline
     .from('#text-box', { y: 100, opacity: 0, duration: 0.3, ease: 'circ.out' })
     .from('#left-first-name', { x: -100, opacity: 0, duration: 0.3, ease: 'circ.out' }, '<0.1')
@@ -22,7 +22,7 @@ function animation(timeline: gsap.core.Timeline) {
     .from('#right-last-name', { x: 100, opacity: 0, duration: 0.3, ease: 'circ.out' }, '<0.1')
     .from('#top-box', { y: 100, duration: 0.3, ease: 'circ.out' }, '<0.1')
     .addPause()
-    .to('#talent-root', { opacity: 0, duration: 0.3, ease: 'circ.out' })
+    .to(root, { opacity: 0, duration: 0.3, ease: 'circ.out' })
 }
 
 export default function TalentDoubleGraphic({
@@ -34,7 +34,6 @@ export default function TalentDoubleGraphic({
   return (
     <HtmlCanvas>
       <div
-        id="talent-root"
         ref={scope}
         style={{ width: '100%', height: '100%', fontFamily: TALENT_FONT }}
       >

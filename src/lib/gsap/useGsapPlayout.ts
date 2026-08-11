@@ -10,7 +10,8 @@ import type { AnimationFunc } from './types'
  * - `onScreen === false` → if past t=0, resume past `addPause` for outro
  * - onComplete           → seek(0).pause() for the next take
  *
- * Put the returned ref on a wrapper that scopes `#id` selectors used in `animFunc`.
+ * Put the returned ref on a wrapper that owns descendant `#id` selectors.
+ * Fade the whole graphic with the `root` argument (not `#id` on the scoped node).
  */
 export function useGsapPlayout(
   onScreen: boolean,
@@ -22,13 +23,16 @@ export function useGsapPlayout(
 
   useGSAP(
     () => {
+      const root = scopeRef.current
+      if (!root) return
+
       const tl = gsap.timeline({
         paused: true,
         onComplete: () => {
           tlRef.current?.seek(0).pause()
         },
       })
-      animFunc(tl)
+      animFunc(tl, root)
       tlRef.current = tl
       return () => {
         tl.kill()

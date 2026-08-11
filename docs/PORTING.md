@@ -32,7 +32,17 @@ If two+ templates share panel chrome, colors, or name blocks, extract to `src/te
 | `useSubAnimation` | `useGsapToggle` |
 | `ReactDOM.createRoot` / HTML entry | Lazy `defineTemplate` in `src/index.ts` only |
 
-Keep the **intro → `addPause()` → outro** timeline body; copy GSAP tweens and `#id` selectors. Put `ref={scope}` on a wrapper that owns those ids (`id="talent-root"` for the fade-out target).
+Keep the **intro → `addPause()` → outro** timeline body; copy GSAP tweens and `#id` selectors for **descendants**. Put `ref={scope}` on a wrapper that owns those ids.
+
+`useGSAP` scope only queries **inside** the ref element — an `#id` on the scoped node itself will not match (this caused `GSAP target #talent-root not found`). Fade the whole graphic with the second `root` argument instead:
+
+```ts
+function animation(tl: gsap.core.Timeline, root: HTMLElement) {
+  tl.from('#text-box', { … })
+    .addPause()
+    .to(root, { opacity: 0, duration: 0.3 })
+}
+```
 
 Runtime layout primitives (`Box`, `Column`, etc.) do **not** forward `id` — wrap GSAP targets in plain `<div id="…">`.
 

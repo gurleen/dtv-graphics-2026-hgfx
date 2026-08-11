@@ -5,7 +5,7 @@ import type { AnimationFunc } from './types'
 
 /**
  * Nested / state-driven clip (port of dtv-graphics-2026 `useSubAnimation`).
- * Same intro → addPause() → outro shape; rebuilds when `deps` or `ready` change.
+ * Same intro → addPause() → outro shape; rebuilds when `deps`/`ready` change.
  * When `playing` flips relative to the last known state, calls `play()`.
  */
 export function useGsapToggle(
@@ -21,6 +21,8 @@ export function useGsapToggle(
   useGSAP(
     () => {
       if (!ready) return
+      const root = scopeRef.current
+      if (!root) return
 
       const tl = gsap.timeline({
         paused: true,
@@ -28,7 +30,7 @@ export function useGsapToggle(
           tlRef.current?.seek(0).pause()
         },
       })
-      animFunc(tl)
+      animFunc(tl, root)
       tlRef.current = tl
 
       if (wasPlaying !== playing) {

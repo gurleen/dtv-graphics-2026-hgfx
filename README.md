@@ -73,10 +73,10 @@ Timeline contract matches the old show package — intro, hold, outro:
 ```ts
 import { useGsapPlayout } from '../../lib/gsap'
 
-function animation(tl: gsap.core.Timeline) {
-  tl.from('#root', { opacity: 0, duration: 0.4 })
+function animation(tl: gsap.core.Timeline, root: HTMLElement) {
+  tl.from('#panel', { opacity: 0, duration: 0.4 })
     .addPause() // hold while on air
-    .to('#root', { opacity: 0, duration: 0.3 })
+    .to(root, { opacity: 0, duration: 0.3 }) // fade scope via `root`, not `#id` on it
 }
 
 export default function MyGraphic({ onScreen }: TemplateRenderProps<Props>) {
@@ -84,7 +84,7 @@ export default function MyGraphic({ onScreen }: TemplateRenderProps<Props>) {
   return (
     <HtmlCanvas>
       <div ref={scope} style={{ width: '100%', height: '100%' }}>
-        <div id="root">…</div>
+        <div id="panel">…</div>
       </div>
     </HtmlCanvas>
   )
@@ -93,4 +93,5 @@ export default function MyGraphic({ onScreen }: TemplateRenderProps<Props>) {
 
 - `onScreen === true` → play from start (intro until `addPause`)
 - `onScreen === false` → resume past `addPause` for outro
-- Put `#id` targets inside the `ref` scope so `useGSAP` scoping works
+- Put `#id` targets **inside** the `ref` scope (`useGSAP` only queries descendants)
+- Fade the whole graphic with the `root` argument — an `#id` on the scoped node itself will not match
