@@ -6,6 +6,7 @@ import {
 } from './config'
 import { lowerThirdTemplateSchema } from './templates/lower-third/schema'
 import { matchupTemplateSchema } from './templates/matchup/schema'
+import { scoreToBreakTemplateSchema } from './templates/score-to-break/schema'
 import { talentSingleTemplateSchema } from './templates/talent/single/schema'
 import { talentDoubleTemplateSchema } from './templates/talent/double/schema'
 
@@ -35,6 +36,10 @@ export default definePackage({
     defineTemplate({
       ...matchupTemplateSchema,
       Render: () => import('./templates/matchup/Graphic'),
+    }),
+    defineTemplate({
+      ...scoreToBreakTemplateSchema,
+      Render: () => import('./templates/score-to-break/Graphic'),
     }),
     defineTemplate({
       ...talentSingleTemplateSchema,
