@@ -5,6 +5,7 @@ import {
   packageConfigSchema,
 } from './config'
 import { lowerThirdTemplateSchema } from './templates/lower-third/schema'
+import { matchupTemplateSchema } from './templates/matchup/schema'
 import { talentSingleTemplateSchema } from './templates/talent/single/schema'
 import { talentDoubleTemplateSchema } from './templates/talent/double/schema'
 
@@ -30,6 +31,10 @@ export default definePackage({
       Render: () => import('./templates/lower-third/Graphic'),
       Controls: () => import('./templates/lower-third/Controls'),
       PreviewControls: () => import('./templates/lower-third/Controls'),
+    }),
+    defineTemplate({
+      ...matchupTemplateSchema,
+      Render: () => import('./templates/matchup/Graphic'),
     }),
     defineTemplate({
       ...talentSingleTemplateSchema,
