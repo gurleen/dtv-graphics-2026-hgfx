@@ -1,9 +1,8 @@
 import { useEffect, useMemo, useState } from 'react'
-import { Button, Select, SideNav, Tabs } from '@hydra-tv/ui'
+import { Button, Select, SideNav } from '@hydra-tv/ui'
 import type { PackagePanelProps } from '@hydra-tv/hydra-gfx-runtime/types'
 import {
   type PackageConfig,
-  type Sport,
   SPORTS,
   sportLabel,
 } from '../config'
@@ -15,13 +14,10 @@ import {
   type TeamInfo,
 } from '../data/teams'
 
-type Section = 'sport' | 'team'
+type Section = 'matchup'
 type TeamSide = 'home' | 'away'
 
-const SECTION_ITEMS = [
-  { key: 'sport', label: 'SPORT' },
-  { key: 'team', label: 'TEAM' },
-]
+const SECTION_ITEMS = [{ key: 'matchup', label: 'MATCHUP' }]
 
 /**
  * Package-registered rundown tab — sport + home/away team selection.
@@ -31,7 +27,7 @@ export default function SettingsPanel({
   config,
   patchConfig,
 }: PackagePanelProps<PackageConfig>) {
-  const [section, setSection] = useState<Section>('sport')
+  const [section, setSection] = useState<Section>('matchup')
 
   return (
     <div
@@ -49,55 +45,58 @@ export default function SettingsPanel({
         width={120}
       />
       <div style={{ flex: 1, minWidth: 0, padding: 16 }}>
-        {section === 'sport' ? (
-          <SportSection sport={config.sport} patchConfig={patchConfig} />
-        ) : (
-          <TeamSection config={config} patchConfig={patchConfig} />
-        )}
+        {section === 'matchup' ? (
+          <MatchupSection config={config} patchConfig={patchConfig} />
+        ) : null}
       </div>
     </div>
   )
 }
 
-function SportSection({
-  sport,
+function MatchupSection({
+  config,
   patchConfig,
 }: {
-  sport: Sport
+  config: PackageConfig
   patchConfig: (patch: Partial<PackageConfig>) => void
 }) {
   return (
-    <div style={{ display: 'flex', flexDirection: 'column', gap: 16, maxWidth: 560 }}>
-      <div
-        style={{
-          fontSize: 11,
-          color: 'var(--fg-3)',
-          letterSpacing: '0.06em',
-          textTransform: 'uppercase',
-        }}
-      >
-        Selected sport:{' '}
-        <span style={{ color: 'var(--fg-1)', fontWeight: 700 }}>{sportLabel(sport)}</span>
+    <div style={{ display: 'flex', flexDirection: 'column', gap: 24, maxWidth: 640 }}>
+      <div style={{ display: 'flex', flexDirection: 'column', gap: 16 }}>
+        <div
+          style={{
+            fontSize: 11,
+            color: 'var(--fg-3)',
+            letterSpacing: '0.06em',
+            textTransform: 'uppercase',
+          }}
+        >
+          Selected sport:{' '}
+          <span style={{ color: 'var(--fg-1)', fontWeight: 700 }}>
+            {sportLabel(config.sport)}
+          </span>
+        </div>
+        <div
+          style={{
+            display: 'grid',
+            gridTemplateColumns: 'repeat(3, minmax(0, 1fr))',
+            gap: 10,
+          }}
+        >
+          {SPORTS.map((s) => (
+            <Button
+              key={s}
+              label={sportLabel(s)}
+              size="lg"
+              variant={config.sport === s ? 'accent' : 'default'}
+              active={config.sport === s}
+              onClick={() => patchConfig({ sport: s })}
+              style={{ width: '100%', minHeight: 64 }}
+            />
+          ))}
+        </div>
       </div>
-      <div
-        style={{
-          display: 'grid',
-          gridTemplateColumns: 'repeat(3, minmax(0, 1fr))',
-          gap: 10,
-        }}
-      >
-        {SPORTS.map((s) => (
-          <Button
-            key={s}
-            label={sportLabel(s)}
-            size="lg"
-            variant={sport === s ? 'accent' : 'default'}
-            active={sport === s}
-            onClick={() => patchConfig({ sport: s })}
-            style={{ width: '100%', minHeight: 64 }}
-          />
-        ))}
-      </div>
+      <TeamSection config={config} patchConfig={patchConfig} />
     </div>
   )
 }
@@ -109,21 +108,17 @@ function TeamSection({
   config: PackageConfig
   patchConfig: (patch: Partial<PackageConfig>) => void
 }) {
-  const [sideIndex, setSideIndex] = useState(0)
-  const side: TeamSide = sideIndex === 0 ? 'home' : 'away'
-  const committedId = side === 'home' ? config.homeTeamId : config.awayTeamId
-
   return (
-    <div style={{ display: 'flex', flexDirection: 'column', gap: 12, maxWidth: 640 }}>
-      <Tabs tabs={['Home', 'Away']} active={sideIndex} onChange={setSideIndex} />
+    <div style={{ display: 'flex', flexDirection: 'column', gap: 24 }}>
       <TeamSelect
-        key={side}
-        side={side}
-        committedId={committedId}
-        onCommit={(teamId) => {
-          if (side === 'home') patchConfig({ homeTeamId: teamId })
-          else patchConfig({ awayTeamId: teamId })
-        }}
+        side="home"
+        committedId={config.homeTeamId}
+        onCommit={(teamId) => patchConfig({ homeTeamId: teamId })}
+      />
+      <TeamSelect
+        side="away"
+        committedId={config.awayTeamId}
+        onCommit={(teamId) => patchConfig({ awayTeamId: teamId })}
       />
     </div>
   )
@@ -155,6 +150,16 @@ function TeamSelect({
 
   return (
     <div style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
+      <div
+        style={{
+          fontSize: 11,
+          color: 'var(--fg-3)',
+          letterSpacing: '0.06em',
+          textTransform: 'uppercase',
+        }}
+      >
+        {side === 'home' ? 'Home team' : 'Away team'}
+      </div>
       {team ? (
         <TeamDetail
           team={team}
