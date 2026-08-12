@@ -10,7 +10,7 @@ const config = {
     'zod',
     '@hydra-tv/ui',
   ],
-  runtime: '^0.1.0',
+  runtime: '^0.2.0',
 }
 
 export default config

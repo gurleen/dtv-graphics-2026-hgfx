@@ -1,4 +1,9 @@
 import { definePackage, defineTemplate } from '@hydra-tv/hydra-gfx-sdk'
+import {
+  packageConfigDefaults,
+  packageConfigFields,
+  packageConfigSchema,
+} from './config'
 import { lowerThirdTemplateSchema } from './templates/lower-third/schema'
 import { talentSingleTemplateSchema } from './templates/talent/single/schema'
 import { talentDoubleTemplateSchema } from './templates/talent/double/schema'
@@ -7,6 +12,18 @@ export default definePackage({
   id: 'dtv-2026',
   name: 'DTV Graphics 2026',
   version: '0.1.0',
+  config: {
+    schema: packageConfigSchema,
+    defaults: packageConfigDefaults,
+    fields: packageConfigFields,
+  },
+  panels: [
+    {
+      id: 'settings',
+      label: 'SETTINGS',
+      Panel: () => import('./panels/SettingsPanel'),
+    },
+  ],
   templates: [
     defineTemplate({
       ...lowerThirdTemplateSchema,
