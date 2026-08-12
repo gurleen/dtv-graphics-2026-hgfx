@@ -3,8 +3,10 @@ import { Button, Select, SideNav } from '@hydra-tv/ui'
 import type { PackagePanelProps } from '@hydra-tv/hydra-gfx-runtime/types'
 import {
   type PackageConfig,
+  type Sport,
   SPORTS,
   sportLabel,
+  sportLogoUrl,
 } from '../config'
 import {
   findTeam,
@@ -84,20 +86,66 @@ function MatchupSection({
           }}
         >
           {SPORTS.map((s) => (
-            <Button
+            <SportButton
               key={s}
-              label={sportLabel(s)}
-              size="lg"
-              variant={config.sport === s ? 'accent' : 'default'}
-              active={config.sport === s}
-              onClick={() => patchConfig({ sport: s })}
-              style={{ width: '100%', minHeight: 64 }}
+              sport={s}
+              selected={config.sport === s}
+              onSelect={() => patchConfig({ sport: s })}
             />
           ))}
         </div>
       </div>
       <TeamSection config={config} patchConfig={patchConfig} />
     </div>
+  )
+}
+
+function SportButton({
+  sport,
+  selected,
+  onSelect,
+}: {
+  sport: Sport
+  selected: boolean
+  onSelect: () => void
+}) {
+  const label = sportLabel(sport)
+  const logoUrl = sportLogoUrl(sport)
+
+  return (
+    <button
+      type="button"
+      onClick={onSelect}
+      style={{
+        display: 'flex',
+        flexDirection: 'column',
+        alignItems: 'center',
+        justifyContent: 'center',
+        gap: 8,
+        width: '100%',
+        minHeight: 120,
+        padding: 12,
+        border: selected ? '2px solid var(--accent)' : '1px solid var(--line-1)',
+        background: selected ? 'var(--bg-accent, var(--bg-2))' : 'transparent',
+        color: 'var(--fg-1)',
+        cursor: selected ? 'default' : 'pointer',
+      }}
+    >
+      <img
+        src={logoUrl}
+        alt={`${label} logo`}
+        style={{ maxWidth: '100%', maxHeight: 72, objectFit: 'contain' }}
+      />
+      <span
+        style={{
+          fontSize: 12,
+          fontWeight: selected ? 700 : 400,
+          textAlign: 'center',
+        }}
+      >
+        {label}
+      </span>
+    </button>
   )
 }
 

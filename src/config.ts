@@ -45,3 +45,25 @@ export function sportLabel(sport: Sport): string {
       return 'Wrestling'
   }
 }
+
+const NCAA_LOGOS_BASE_URL = 'https://gfx.dragonstv.io'
+
+export function sportLogoUrl(sport: Sport): string {
+  switch (sport) {
+    case 'mens-basketball':
+      return new URL(
+        '/media/images/ncaa-logos/mens-basketball.png',
+        NCAA_LOGOS_BASE_URL,
+      ).toString()
+    case 'womens-basketball':
+      return new URL(
+        '/media/images/ncaa-logos/womens-basketball.png',
+        NCAA_LOGOS_BASE_URL,
+      ).toString()
+    case 'wrestling':
+      return new URL(
+        '/media/images/ncaa-logos/wrestling.png',
+        NCAA_LOGOS_BASE_URL,
+      ).toString()
+  }
+}
