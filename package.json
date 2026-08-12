@@ -6,7 +6,7 @@
   "scripts": {
     "build": "hydra-gfx build --out dist",
     "watch": "hydra-gfx build --watch --out dist",
-    "demo": "bun --hot ./demo/server.ts"
+    "demo": "bun --hot ./demos/server.ts"
   },
   "engines": {
     "bun": ">=1.1.0"

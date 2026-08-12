@@ -1,22 +1,16 @@
-import { HtmlCanvas, Rect, Row, Column, Flex, Text, Image } from '@hydra-tv/hydra-gfx-runtime'
+import { HtmlCanvas } from '@hydra-tv/hydra-gfx-runtime'
 import type { TemplateRenderProps } from '@hydra-tv/hydra-gfx-runtime/types'
 import type gsap from 'gsap'
 import { useGsapPlayout } from '../../lib/gsap'
 import type { Sport } from '../../config'
-import {
-  findTeam,
-  getTeamKnockoutLogo,
-  type TeamInfo,
-} from '../../data/teams'
+import { findTeam } from '../../data/teams'
 import type { MatchupProps } from './schema'
 import {
   DEFAULT_BASKETBALL_CONF_LOGO,
   DEFAULT_SPONSOR_LOGO,
   DEFAULT_WRESTLING_CONF_LOGO,
 } from './assets'
-
-const MATCHUP_FONT = 'Zuume, system-ui, sans-serif'
-const EMPTY_TEAM_FILL = '#141515'
+import { MATCHUP_FONT, MATCHUP_LOGO_SCALE, MatchupLayout } from './Layout'
 
 function animation(timeline: gsap.core.Timeline, root: HTMLElement) {
   timeline
@@ -53,18 +47,6 @@ function sponsorLogoUrl(props: MatchupProps): string {
   return props.sponsorLogoUrl || DEFAULT_SPONSOR_LOGO
 }
 
-function venueLine(venue: string, location: string): string {
-  const v = venue.trim()
-  const loc = location.trim()
-  if (v && loc) return `${v} • ${loc}`
-  return v || loc || ' '
-}
-
-function teamFill(color: string | undefined): string {
-  if (!color) return EMPTY_TEAM_FILL
-  return color.startsWith('#') ? color : `#${color}`
-}
-
 export default function MatchupGraphic({
   props,
   onScreen,
@@ -89,162 +71,18 @@ export default function MatchupGraphic({
           overflow:hidden monitor well — preview looks empty/black.
         */}
         <div style={{ position: 'absolute', top: 700, left: 0, width: 1920 }}>
-          <Column width={1920} height="auto" align="stretch">
-            <div style={{ overflow: 'hidden' }}>
-              <SponsorBar presenter={presenter} sponsorLogoUrl={sponsorLogo} />
-            </div>
-            <div style={{ overflow: 'hidden' }}>
-              <Row width={1920} height={189} align="stretch" justify="start">
-                <TeamBox isHome={false} team={awayTeam} />
-                <ConfBox confLogoUrl={confLogo} />
-                <TeamBox isHome={true} team={homeTeam} />
-              </Row>
-            </div>
-            <div style={{ overflow: 'hidden' }}>
-              <BottomBar venue={props.venue} location={props.location} />
-            </div>
-          </Column>
+          <MatchupLayout
+            presenter={presenter}
+            sponsorLogoUrl={sponsorLogo}
+            confLogoUrl={confLogo}
+            venue={props.venue}
+            location={props.location}
+            homeTeam={homeTeam}
+            awayTeam={awayTeam}
+            logoScale={MATCHUP_LOGO_SCALE}
+          />
         </div>
       </div>
     </HtmlCanvas>
-  )
-}
-
-function SponsorBar({
-  presenter,
-  sponsorLogoUrl,
-}: {
-  presenter: string
-  sponsorLogoUrl: string
-}) {
-  return (
-    <div id="sponsor-bar">
-      <Row
-        width={1920}
-        height={72}
-        justify="center"
-        align="center"
-        gap={20}
-        padding={28}
-        background="#141414"
-      >
-        <Text color="#FFFFFF" fontSize={48} fontFamily={MATCHUP_FONT} lineHeight={1.05} singleLine>
-          {presenter}
-        </Text>
-        {sponsorLogoUrl ? (
-          <Image src={sponsorLogoUrl} width={400} height={48} fit="contain" alt="" />
-        ) : null}
-      </Row>
-    </div>
-  )
-}
-
-function ConfBox({ confLogoUrl }: { confLogoUrl: string }) {
-  return (
-    <div id="caa-box">
-      <Row
-        width={350}
-        height={189}
-        justify="center"
-        align="center"
-        padding={20}
-        background="#141515"
-      >
-        <div id="caa-logo">
-          {confLogoUrl ? (
-            <Image src={confLogoUrl} width={280} height={140} fit="contain" alt="" />
-          ) : (
-            <Rect fill="transparent" width={280} height={140} />
-          )}
-        </div>
-      </Row>
-    </div>
-  )
-}
-
-function TeamBox({ isHome, team }: { isHome: boolean; team: TeamInfo | undefined }) {
-  const idPrefix = isHome ? 'home' : 'away'
-  const logoUrl = team ? getTeamKnockoutLogo(team) : ''
-  const school = team?.short_name.toUpperCase() ?? ''
-  const mascot = team?.mascot.toUpperCase() ?? ''
-
-  return (
-    <div id={`${idPrefix}-box`}>
-      <Flex
-        width={785}
-        height={189}
-        direction={isHome ? 'row-reverse' : 'row'}
-        align="stretch"
-        background={teamFill(team?.color)}
-      >
-        <div id={`${idPrefix}-logo`}>
-          <Row width={300} height={189} justify="center" align="center">
-            {logoUrl ? (
-              <img
-                src={logoUrl}
-                alt=""
-                style={{
-                  marginTop: -50,
-                  transform: 'scale(1.5)',
-                  maxWidth: 220,
-                  maxHeight: 160,
-                  objectFit: 'contain',
-                }}
-              />
-            ) : null}
-          </Row>
-        </div>
-        <Column
-          width={485}
-          height={189}
-          justify="center"
-          align={isHome ? 'start' : 'end'}
-          paddingX={20}
-        >
-          <div id={`${idPrefix}-school-name`}>
-            <Text
-              color="#FFFFFF"
-              fontSize={60}
-              fontFamily={MATCHUP_FONT}
-              textAlign={isHome ? 'left' : 'right'}
-              lineHeight={1.05}
-              singleLine
-            >
-              {school || ' '}
-            </Text>
-          </div>
-          <div id={`${idPrefix}-team-name`}>
-            <Text
-              color="#FFFFFF"
-              fontSize={72}
-              fontFamily={MATCHUP_FONT}
-              textAlign={isHome ? 'left' : 'right'}
-              lineHeight={1.05}
-              singleLine
-            >
-              {mascot || ' '}
-            </Text>
-          </div>
-        </Column>
-      </Flex>
-    </div>
-  )
-}
-
-function BottomBar({ venue, location }: { venue: string; location: string }) {
-  return (
-    <div id="bottom-bar">
-      <Row
-        width={1920}
-        height={61}
-        justify="center"
-        align="center"
-        background="#F0F0F0"
-      >
-        <Text color="#000000" fontSize={48} fontFamily={MATCHUP_FONT} lineHeight={1.05} singleLine>
-          {venueLine(venue, location)}
-        </Text>
-      </Row>
-    </div>
   )
 }
