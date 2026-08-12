@@ -52,15 +52,7 @@ export default function MatchupGraphic({
   props,
   onScreen,
 }: TemplateRenderProps<MatchupProps>) {
-  const scope = useGsapPlayout(onScreen, animation, [
-    props.sport,
-    props.homeTeamId,
-    props.awayTeamId,
-    props.venue,
-    props.sponsorLogoUrl,
-    props.basketballConfLogoUrl,
-    props.wrestlingConfLogoUrl,
-  ])
+  const scope = useGsapPlayout(onScreen, animation)
 
   const homeTeam = findTeam(props.homeTeamId)
   const awayTeam = findTeam(props.awayTeamId)
@@ -73,26 +65,28 @@ export default function MatchupGraphic({
         ref={scope}
         style={{ width: '100%', height: '100%', fontFamily: MATCHUP_FONT }}
       >
-        <Column
-          width={1920}
-          height="auto"
-          align="stretch"
-          marginTop={700}
-        >
-          <div style={{ overflow: 'hidden' }}>
-            <SponsorBar presenter={presenter} sponsorLogoUrl={props.sponsorLogoUrl} />
-          </div>
-          <div style={{ overflow: 'hidden' }}>
-            <Row width={1920} height={189} align="stretch" justify="start">
-              <TeamBox isHome={false} team={awayTeam} />
-              <ConfBox confLogoUrl={confLogo} />
-              <TeamBox isHome={true} team={homeTeam} />
-            </Row>
-          </div>
-          <div style={{ overflow: 'hidden' }}>
-            <BottomBar venue={props.venue} />
-          </div>
-        </Column>
+        {/*
+          Absolute top (not marginTop): margin-top collapses through HtmlCanvas
+          into the host PVW scale wrapper and pushes the graphic below the
+          overflow:hidden monitor well — preview looks empty/black.
+        */}
+        <div style={{ position: 'absolute', top: 700, left: 0, width: 1920 }}>
+          <Column width={1920} height="auto" align="stretch">
+            <div style={{ overflow: 'hidden' }}>
+              <SponsorBar presenter={presenter} sponsorLogoUrl={props.sponsorLogoUrl} />
+            </div>
+            <div style={{ overflow: 'hidden' }}>
+              <Row width={1920} height={189} align="stretch" justify="start">
+                <TeamBox isHome={false} team={awayTeam} />
+                <ConfBox confLogoUrl={confLogo} />
+                <TeamBox isHome={true} team={homeTeam} />
+              </Row>
+            </div>
+            <div style={{ overflow: 'hidden' }}>
+              <BottomBar venue={props.venue} />
+            </div>
+          </Column>
+        </div>
       </div>
     </HtmlCanvas>
   )
@@ -116,7 +110,7 @@ function SponsorBar({
         padding={28}
         background="#141414"
       >
-        <Text color="#FFFFFF" fontSize={48} fontFamily={MATCHUP_FONT} singleLine>
+        <Text color="#FFFFFF" fontSize={48} fontFamily={MATCHUP_FONT} lineHeight={1.05} singleLine>
           {presenter}
         </Text>
         {sponsorLogoUrl ? (
@@ -195,6 +189,7 @@ function TeamBox({ isHome, team }: { isHome: boolean; team: TeamInfo | undefined
               fontSize={60}
               fontFamily={MATCHUP_FONT}
               textAlign={isHome ? 'left' : 'right'}
+              lineHeight={1.05}
               singleLine
             >
               {school || ' '}
@@ -206,6 +201,7 @@ function TeamBox({ isHome, team }: { isHome: boolean; team: TeamInfo | undefined
               fontSize={72}
               fontFamily={MATCHUP_FONT}
               textAlign={isHome ? 'left' : 'right'}
+              lineHeight={1.05}
               singleLine
             >
               {mascot || ' '}
@@ -227,7 +223,7 @@ function BottomBar({ venue }: { venue: string }) {
         align="center"
         background="#F0F0F0"
       >
-        <Text color="#000000" fontSize={48} fontFamily={MATCHUP_FONT} singleLine>
+        <Text color="#000000" fontSize={48} fontFamily={MATCHUP_FONT} lineHeight={1.05} singleLine>
           {venue || ' '}
         </Text>
       </Row>

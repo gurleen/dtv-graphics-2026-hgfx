@@ -20,6 +20,8 @@ export function useGsapPlayout(
 ): RefObject<HTMLDivElement | null> {
   const scopeRef = useRef<HTMLDivElement | null>(null)
   const tlRef = useRef<gsap.core.Timeline | null>(null)
+  const onScreenRef = useRef(onScreen)
+  onScreenRef.current = onScreen
 
   useGSAP(
     () => {
@@ -34,6 +36,9 @@ export function useGsapPlayout(
       })
       animFunc(tl, root)
       tlRef.current = tl
+      // If the timeline was rebuilt while already on-screen (e.g. prop deps),
+      // the onScreen effect won't re-fire — resume IN immediately.
+      if (onScreenRef.current) tl.play()
       return () => {
         tl.kill()
         tlRef.current = null

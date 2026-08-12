@@ -17,10 +17,10 @@ export const matchupDefaults: MatchupProps = {
   sport: 'mens-basketball',
   homeTeamId: DREXEL_TEAM_ID,
   awayTeamId: 0,
-  venue: '',
-  sponsorLogoUrl: '',
-  basketballConfLogoUrl: '',
-  wrestlingConfLogoUrl: '',
+  venue: 'DASKALAKIS ATHLETIC CENTER',
+  sponsorLogoUrl: 'https://images.dragonstv.io/sponsors/Independence.png',
+  basketballConfLogoUrl: 'https://images.dragonstv.io/sponsors/CAAWhite.png',
+  wrestlingConfLogoUrl: 'https://images.dragonstv.io/sponsors/EIWA.png',
 }
 
 export const matchupSchema = z.object({
