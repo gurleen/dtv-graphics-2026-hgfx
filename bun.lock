@@ -6,8 +6,8 @@
       "name": "dtv-graphics-2026-hgfx",
       "dependencies": {
         "@gsap/react": "^2.1.2",
-        "@hydra-tv/hydra-gfx-runtime": "^0.1.1",
-        "@hydra-tv/hydra-gfx-sdk": "^0.1.1",
+        "@hydra-tv/hydra-gfx-runtime": "^0.2.0",
+        "@hydra-tv/hydra-gfx-sdk": "^0.2.0",
         "@hydra-tv/tokens": "^0.1.0",
         "@hydra-tv/ui": "^0.1.0",
         "gsap": "^3.15.0",
@@ -24,9 +24,9 @@
   "packages": {
     "@gsap/react": ["@gsap/react@2.1.2", "", { "peerDependencies": { "gsap": "^3.12.5", "react": ">=17" } }, "sha512-JqliybO1837UcgH2hVOM4VO+38APk3ECNrsuSM4MuXp+rbf+/2IG2K1YJiqfTcXQHH7XlA0m3ykniFYstfq0Iw=="],
 
-    "@hydra-tv/hydra-gfx-runtime": ["@hydra-tv/hydra-gfx-runtime@0.1.1", "", { "peerDependencies": { "react": "^19.0.0", "zod": "^4.0.0" } }, "sha512-jxasNkmze74fWsX7SjUuMpV7zVB0uwoZJwK1UC2XutWLGOTS6jWrXKa+BieRh50qMG4gHtR7RYBVkvX5kD47YA=="],
+    "@hydra-tv/hydra-gfx-runtime": ["@hydra-tv/hydra-gfx-runtime@0.2.0", "", { "peerDependencies": { "react": "^19.0.0", "zod": "^4.0.0" } }, "sha512-SySaw7vByM55MEDnT08TtqjibBgLI2K6087E6iuUFoFVwgSiSs1sUbbnt/Nor9bqw/SHH+HROow8EpSG9SS3Cw=="],
 
-    "@hydra-tv/hydra-gfx-sdk": ["@hydra-tv/hydra-gfx-sdk@0.1.1", "", { "dependencies": { "@hydra-tv/hydra-gfx-runtime": "^0.1.1" }, "peerDependencies": { "react": "^19.0.0", "zod": "^4.0.0" }, "bin": { "hydra-gfx": "dist/cli.js" } }, "sha512-r18MY8in0TpnffqDrCG5uF6CJvqFplthV2INNUsmkimMuj8xICMCcJneneKiHWoZhj2aEeL9U6KW1FibfiSteA=="],
+    "@hydra-tv/hydra-gfx-sdk": ["@hydra-tv/hydra-gfx-sdk@0.2.0", "", { "dependencies": { "@hydra-tv/hydra-gfx-runtime": "^0.2.0" }, "peerDependencies": { "react": "^19.0.0", "zod": "^4.0.0" }, "bin": { "hydra-gfx": "dist/cli.js" } }, "sha512-bpzMpkMAEhVibuissJw4UoCMTvBHaVNN+BU6jvduROJUBr8ZJsdpI5zjoOoYIppGG/3hyV+7H6U26WxXylaysA=="],
 
     "@hydra-tv/tokens": ["@hydra-tv/tokens@0.1.0", "", {}, "sha512-n817GG8wjTJSSXwDVE0dhWJdkiWQeYEYJZtrr+RiaobbaR+YNJi8KZTOUkWQEM/P9LX4yl0IO+CJCEHZ0a9i9A=="],
 
