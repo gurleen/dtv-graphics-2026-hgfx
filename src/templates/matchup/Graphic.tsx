@@ -9,6 +9,11 @@ import {
   type TeamInfo,
 } from '../../data/teams'
 import type { MatchupProps } from './schema'
+import {
+  DEFAULT_BASKETBALL_CONF_LOGO,
+  DEFAULT_SPONSOR_LOGO,
+  DEFAULT_WRESTLING_CONF_LOGO,
+} from './assets'
 
 const MATCHUP_FONT = 'Zuume, system-ui, sans-serif'
 const EMPTY_TEAM_FILL = '#141515'
@@ -38,9 +43,21 @@ function presenterForSport(sport: Sport): string {
 }
 
 function confLogoForSport(props: MatchupProps): string {
-  return props.sport === 'wrestling'
-    ? props.wrestlingConfLogoUrl
-    : props.basketballConfLogoUrl
+  if (props.sport === 'wrestling') {
+    return props.wrestlingConfLogoUrl || DEFAULT_WRESTLING_CONF_LOGO
+  }
+  return props.basketballConfLogoUrl || DEFAULT_BASKETBALL_CONF_LOGO
+}
+
+function sponsorLogoUrl(props: MatchupProps): string {
+  return props.sponsorLogoUrl || DEFAULT_SPONSOR_LOGO
+}
+
+function venueLine(venue: string, location: string): string {
+  const v = venue.trim()
+  const loc = location.trim()
+  if (v && loc) return `${v} • ${loc}`
+  return v || loc || ' '
 }
 
 function teamFill(color: string | undefined): string {
@@ -57,6 +74,7 @@ export default function MatchupGraphic({
   const homeTeam = findTeam(props.homeTeamId)
   const awayTeam = findTeam(props.awayTeamId)
   const confLogo = confLogoForSport(props)
+  const sponsorLogo = sponsorLogoUrl(props)
   const presenter = presenterForSport(props.sport)
 
   return (
@@ -73,7 +91,7 @@ export default function MatchupGraphic({
         <div style={{ position: 'absolute', top: 700, left: 0, width: 1920 }}>
           <Column width={1920} height="auto" align="stretch">
             <div style={{ overflow: 'hidden' }}>
-              <SponsorBar presenter={presenter} sponsorLogoUrl={props.sponsorLogoUrl} />
+              <SponsorBar presenter={presenter} sponsorLogoUrl={sponsorLogo} />
             </div>
             <div style={{ overflow: 'hidden' }}>
               <Row width={1920} height={189} align="stretch" justify="start">
@@ -83,7 +101,7 @@ export default function MatchupGraphic({
               </Row>
             </div>
             <div style={{ overflow: 'hidden' }}>
-              <BottomBar venue={props.venue} />
+              <BottomBar venue={props.venue} location={props.location} />
             </div>
           </Column>
         </div>
@@ -213,7 +231,7 @@ function TeamBox({ isHome, team }: { isHome: boolean; team: TeamInfo | undefined
   )
 }
 
-function BottomBar({ venue }: { venue: string }) {
+function BottomBar({ venue, location }: { venue: string; location: string }) {
   return (
     <div id="bottom-bar">
       <Row
@@ -224,7 +242,7 @@ function BottomBar({ venue }: { venue: string }) {
         background="#F0F0F0"
       >
         <Text color="#000000" fontSize={48} fontFamily={MATCHUP_FONT} lineHeight={1.05} singleLine>
-          {venue || ' '}
+          {venueLine(venue, location)}
         </Text>
       </Row>
     </div>

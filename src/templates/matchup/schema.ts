@@ -8,8 +8,12 @@ export type MatchupProps = {
   homeTeamId: number
   awayTeamId: number
   venue: string
+  location: string
+  /** Optional override; empty uses the bundled Independence logo. */
   sponsorLogoUrl: string
+  /** Optional override; empty uses the bundled CAA logo. */
   basketballConfLogoUrl: string
+  /** Optional override; empty uses the bundled EIWA logo. */
   wrestlingConfLogoUrl: string
 }
 
@@ -18,9 +22,10 @@ export const matchupDefaults: MatchupProps = {
   homeTeamId: DREXEL_TEAM_ID,
   awayTeamId: 0,
   venue: 'DASKALAKIS ATHLETIC CENTER',
-  sponsorLogoUrl: 'https://images.dragonstv.io/sponsors/Independence.png',
-  basketballConfLogoUrl: 'https://images.dragonstv.io/sponsors/CAAWhite.png',
-  wrestlingConfLogoUrl: 'https://images.dragonstv.io/sponsors/EIWA.png',
+  location: 'PHILADELPHIA, PA',
+  sponsorLogoUrl: '',
+  basketballConfLogoUrl: '',
+  wrestlingConfLogoUrl: '',
 }
 
 export const matchupSchema = z.object({
@@ -28,6 +33,7 @@ export const matchupSchema = z.object({
   homeTeamId: z.number().int(),
   awayTeamId: z.number().int(),
   venue: z.string(),
+  location: z.string(),
   sponsorLogoUrl: z.string(),
   basketballConfLogoUrl: z.string(),
   wrestlingConfLogoUrl: z.string(),
@@ -53,9 +59,10 @@ export const matchupTemplateSchema: TemplateSchema<MatchupProps> = {
     homeTeamId: { label: 'Home team ID', section: 'TEAMS', type: 'number' },
     awayTeamId: { label: 'Away team ID', section: 'TEAMS', type: 'number' },
     venue: { label: 'Venue', section: 'CONTENT' },
-    sponsorLogoUrl: { label: 'Sponsor logo URL', section: 'BRAND' },
-    basketballConfLogoUrl: { label: 'Basketball conf logo URL', section: 'BRAND' },
-    wrestlingConfLogoUrl: { label: 'Wrestling conf logo URL', section: 'BRAND' },
+    location: { label: 'Location', section: 'CONTENT' },
+    sponsorLogoUrl: { label: 'Sponsor logo URL override', section: 'BRAND' },
+    basketballConfLogoUrl: { label: 'Basketball conf logo URL override', section: 'BRAND' },
+    wrestlingConfLogoUrl: { label: 'Wrestling conf logo URL override', section: 'BRAND' },
   },
   transition: { inMs: 2500, outMs: 500 },
   live: {
