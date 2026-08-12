@@ -50,8 +50,10 @@ function ScaleSlider({
 }
 
 function Demo() {
-  const [matchupScale, setMatchupScale] = useState(MATCHUP_LOGO_SCALE)
-  const [stbScale, setStbScale] = useState(STB_LOGO_SCALE)
+  const [matchupHomeScale, setMatchupHomeScale] = useState(MATCHUP_LOGO_SCALE)
+  const [matchupAwayScale, setMatchupAwayScale] = useState(MATCHUP_LOGO_SCALE)
+  const [stbHomeScale, setStbHomeScale] = useState(STB_LOGO_SCALE)
+  const [stbAwayScale, setStbAwayScale] = useState(STB_LOGO_SCALE)
 
   const homeTeam = findTeam(DREXEL_TEAM_ID)
   const awayTeam = findTeam(DELAWARE_TEAM_ID)
@@ -75,7 +77,16 @@ function Demo() {
 
       <section style={{ marginBottom: 56 }}>
         <h2 style={{ fontSize: 20, fontWeight: 700, margin: '0 0 12px' }}>Matchup</h2>
-        <ScaleSlider label="logoScale" value={matchupScale} onChange={setMatchupScale} />
+        <ScaleSlider
+          label="homeLogoScale"
+          value={matchupHomeScale}
+          onChange={setMatchupHomeScale}
+        />
+        <ScaleSlider
+          label="awayLogoScale"
+          value={matchupAwayScale}
+          onChange={setMatchupAwayScale}
+        />
         <div
           style={{
             width: MATCHUP_WIDTH * MATCHUP_PREVIEW_SCALE,
@@ -100,7 +111,8 @@ function Demo() {
               location={matchupDefaults.location}
               homeTeam={homeTeam}
               awayTeam={awayTeam}
-              logoScale={matchupScale}
+              homeLogoScale={matchupHomeScale}
+              awayLogoScale={matchupAwayScale}
             />
           </div>
         </div>
@@ -108,7 +120,16 @@ function Demo() {
 
       <section>
         <h2 style={{ fontSize: 20, fontWeight: 700, margin: '0 0 12px' }}>Score to break</h2>
-        <ScaleSlider label="logoScale" value={stbScale} onChange={setStbScale} />
+        <ScaleSlider
+          label="homeLogoScale"
+          value={stbHomeScale}
+          onChange={setStbHomeScale}
+        />
+        <ScaleSlider
+          label="awayLogoScale"
+          value={stbAwayScale}
+          onChange={setStbAwayScale}
+        />
         <div style={{ fontFamily: STB_FONT }}>
           <ScoreToBreakLayout
             homeTeam={homeTeam}
@@ -117,7 +138,8 @@ function Demo() {
             awayScore={68}
             period="1ST QUARTER"
             sponsorLogoUrl={DEFAULT_SPONSOR_LOGO}
-            logoScale={stbScale}
+            homeLogoScale={stbHomeScale}
+            awayLogoScale={stbAwayScale}
           />
         </div>
       </section>

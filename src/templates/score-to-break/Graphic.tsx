@@ -5,7 +5,7 @@ import { useGsapPlayout } from '../../lib/gsap'
 import { findTeam } from '../../data/teams'
 import { DEFAULT_SPONSOR_LOGO } from '../matchup/assets'
 import type { ScoreToBreakProps } from './schema'
-import { STB_FONT, STB_LOGO_SCALE, ScoreToBreakLayout } from './Layout'
+import { STB_FONT, ScoreToBreakLayout } from './Layout'
 
 function animation(timeline: gsap.core.Timeline, root: HTMLElement) {
   timeline
@@ -51,7 +51,8 @@ export default function ScoreToBreakGraphic({
             awayScore={props.awayScore}
             period={props.period}
             sponsorLogoUrl={sponsorLogo}
-            logoScale={STB_LOGO_SCALE}
+            homeLogoScale={props.homeLogoScale}
+            awayLogoScale={props.awayLogoScale}
           />
         </div>
       </div>

@@ -16,7 +16,8 @@ export type ScoreToBreakLayoutProps = {
   awayScore: number
   period: string
   sponsorLogoUrl: string
-  logoScale?: number
+  homeLogoScale?: number
+  awayLogoScale?: number
 }
 
 function teamFill(color: string | undefined): string {
@@ -31,16 +32,17 @@ export function ScoreToBreakLayout({
   awayScore,
   period,
   sponsorLogoUrl,
-  logoScale = STB_LOGO_SCALE,
+  homeLogoScale = STB_LOGO_SCALE,
+  awayLogoScale = STB_LOGO_SCALE,
 }: ScoreToBreakLayoutProps) {
   return (
     <Column width={437} height={373} align="stretch" background={PANEL_BG}>
       <Row width={437} height={168} align="stretch" justify="start">
-        <TeamBox team={awayTeam} logoScale={logoScale} />
+        <TeamBox team={awayTeam} logoScale={awayLogoScale} />
         <ScoreBox score={awayScore} isHome={false} />
       </Row>
       <Row width={437} height={168} align="stretch" justify="start">
-        <TeamBox team={homeTeam} logoScale={logoScale} />
+        <TeamBox team={homeTeam} logoScale={homeLogoScale} />
         <ScoreBox score={homeScore} isHome={true} />
       </Row>
       <BottomBar periodText={period} sponsorLogoUrl={sponsorLogoUrl} />

@@ -18,8 +18,11 @@ function teamBoxWidth(logoScale: number): number {
   return logoBoxWidth(logoScale) + MATCHUP_TEXT_WIDTH
 }
 
-function confBoxWidth(logoScale: number): number {
-  return Math.max(120, 1920 - 2 * teamBoxWidth(logoScale))
+function confBoxWidth(homeLogoScale: number, awayLogoScale: number): number {
+  return Math.max(
+    120,
+    1920 - teamBoxWidth(homeLogoScale) - teamBoxWidth(awayLogoScale),
+  )
 }
 
 export type MatchupLayoutProps = {
@@ -30,7 +33,8 @@ export type MatchupLayoutProps = {
   location: string
   homeTeam: TeamInfo | undefined
   awayTeam: TeamInfo | undefined
-  logoScale?: number
+  homeLogoScale?: number
+  awayLogoScale?: number
 }
 
 function venueLine(venue: string, location: string): string {
@@ -53,7 +57,8 @@ export function MatchupLayout({
   location,
   homeTeam,
   awayTeam,
-  logoScale = MATCHUP_LOGO_SCALE,
+  homeLogoScale = MATCHUP_LOGO_SCALE,
+  awayLogoScale = MATCHUP_LOGO_SCALE,
 }: MatchupLayoutProps) {
   return (
     <Column width={1920} height="auto" align="stretch">
@@ -62,9 +67,12 @@ export function MatchupLayout({
       </div>
       <div style={{ overflow: 'hidden' }}>
         <Row width={1920} height={189} align="stretch" justify="start">
-          <TeamBox isHome={false} team={awayTeam} logoScale={logoScale} />
-          <ConfBox confLogoUrl={confLogoUrl} width={confBoxWidth(logoScale)} />
-          <TeamBox isHome={true} team={homeTeam} logoScale={logoScale} />
+          <TeamBox isHome={false} team={awayTeam} logoScale={awayLogoScale} />
+          <ConfBox
+            confLogoUrl={confLogoUrl}
+            width={confBoxWidth(homeLogoScale, awayLogoScale)}
+          />
+          <TeamBox isHome={true} team={homeTeam} logoScale={homeLogoScale} />
         </Row>
       </div>
       <div style={{ overflow: 'hidden' }}>

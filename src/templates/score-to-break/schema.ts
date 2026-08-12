@@ -5,6 +5,8 @@ import { DREXEL_TEAM_ID } from '../../data/teams'
 export type ScoreToBreakProps = {
   homeTeamId: number
   awayTeamId: number
+  homeLogoScale: number
+  awayLogoScale: number
   homeScore: number
   awayScore: number
   period: string
@@ -15,6 +17,8 @@ export type ScoreToBreakProps = {
 export const scoreToBreakDefaults: ScoreToBreakProps = {
   homeTeamId: DREXEL_TEAM_ID,
   awayTeamId: 0,
+  homeLogoScale: 2.5,
+  awayLogoScale: 2.5,
   homeScore: 0,
   awayScore: 0,
   period: '1ST QUARTER',
@@ -24,6 +28,8 @@ export const scoreToBreakDefaults: ScoreToBreakProps = {
 export const scoreToBreakSchema = z.object({
   homeTeamId: z.number().int(),
   awayTeamId: z.number().int(),
+  homeLogoScale: z.number().positive(),
+  awayLogoScale: z.number().positive(),
   homeScore: z.number(),
   awayScore: z.number(),
   period: z.string(),
@@ -39,6 +45,22 @@ export const scoreToBreakTemplateSchema: TemplateSchema<ScoreToBreakProps> = {
   fields: {
     homeTeamId: { label: 'Home team ID', section: 'TEAMS', type: 'number' },
     awayTeamId: { label: 'Away team ID', section: 'TEAMS', type: 'number' },
+    homeLogoScale: {
+      label: 'Home logo scale',
+      section: 'TEAMS',
+      type: 'slider',
+      min: 0.8,
+      max: 3.5,
+      step: 0.05,
+    },
+    awayLogoScale: {
+      label: 'Away logo scale',
+      section: 'TEAMS',
+      type: 'slider',
+      min: 0.8,
+      max: 3.5,
+      step: 0.05,
+    },
     homeScore: { label: 'Home score', section: 'SCORE', type: 'number' },
     awayScore: { label: 'Away score', section: 'SCORE', type: 'number' },
     period: { label: 'Period', section: 'SCORE' },

@@ -10,7 +10,7 @@ import {
   DEFAULT_SPONSOR_LOGO,
   DEFAULT_WRESTLING_CONF_LOGO,
 } from './assets'
-import { MATCHUP_FONT, MATCHUP_LOGO_SCALE, MatchupLayout } from './Layout'
+import { MATCHUP_FONT, MatchupLayout } from './Layout'
 
 function animation(timeline: gsap.core.Timeline, root: HTMLElement) {
   timeline
@@ -79,7 +79,8 @@ export default function MatchupGraphic({
             location={props.location}
             homeTeam={homeTeam}
             awayTeam={awayTeam}
-            logoScale={MATCHUP_LOGO_SCALE}
+            homeLogoScale={props.homeLogoScale}
+            awayLogoScale={props.awayLogoScale}
           />
         </div>
       </div>
