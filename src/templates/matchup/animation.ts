@@ -32,6 +32,9 @@ export const matchupAnimation: AnimationFunc = (timeline, root) => {
     strokeLinejoin: 'round',
     strokeLinecap: 'round',
   })
+  // Parked toward the CAA plate; the overflow wrapper clips them until the slam.
+  gsap.set('#away-box', { xPercent: 100 })
+  gsap.set('#home-box', { xPercent: -100 })
 
   timeline
     .to(paths, {
@@ -41,6 +44,7 @@ export const matchupAnimation: AnimationFunc = (timeline, root) => {
       ease: 'power2.inOut',
     })
     .to(paths, { fillOpacity: 1, duration: 0.3, ease: 'power1.out' }, '-=0.28')
+    .addLabel('slam', '+=0.08')
     .to(
       '#caa-logo',
       {
@@ -50,10 +54,10 @@ export const matchupAnimation: AnimationFunc = (timeline, root) => {
         duration: 0.38,
         ease: 'power3.in',
       },
-      '+=0.08',
+      'slam',
     )
-    .to('#caa-box', { autoAlpha: 1, duration: 0.18, ease: 'power2.out' }, '<')
-    .to(paths, { strokeWidth: 0, duration: 0.2, ease: 'power1.out' }, '<')
+    .to('#caa-box', { autoAlpha: 1, duration: 0.18, ease: 'power2.out' }, 'slam')
+    .to(paths, { strokeWidth: 0, duration: 0.2, ease: 'power1.out' }, 'slam')
     .fromTo(
       '#caa-ripple',
       { scale: 0.25, autoAlpha: 0.9 },
@@ -64,15 +68,16 @@ export const matchupAnimation: AnimationFunc = (timeline, root) => {
         ease: 'power2.out',
         immediateRender: false,
       },
-      '<0.36',
+      'slam+=0.36',
     )
-    .to('#caa-logo', { scale: 1, y: 0, duration: 0.18, ease: 'power2.out' }, '<0.08')
-    .from('#home-box', { y: 189, duration: 2, ease: 'expo.out' }, '>-0.02')
-    .from('#away-box', { y: 189, duration: 2, ease: 'expo.out' }, '<')
-    .from('#home-logo', { xPercent: 100, duration: 2, ease: 'expo.out' }, '<0.1')
+    .to('#caa-logo', { scale: 1, y: 0, duration: 0.18, ease: 'power2.out' }, 'slam+=0.44')
+    // Ripple ring's leading edge hits the left/right of the plate ~0.10s in.
+    .to('#away-box', { xPercent: 0, duration: 0.62, ease: 'power3.out' }, 'slam+=0.46')
+    .to('#home-box', { xPercent: 0, duration: 0.62, ease: 'power3.out' }, 'slam+=0.46')
+    .from('#home-logo', { xPercent: 100, duration: 2, ease: 'expo.out' }, 'slam+=0.71')
     .from('#away-logo', { xPercent: -100, duration: 2, ease: 'expo.out' }, '<')
-    .from('#home-school-name', { y: 75, duration: 2, ease: 'expo.out' }, '<0.1')
-    .from('#away-school-name', { y: 75, duration: 2, ease: 'expo.out' }, '<')
+    .from('#home-school-name', { xPercent: -100, duration: 2, ease: 'expo.out' }, '<0.1')
+    .from('#away-school-name', { xPercent: 100, duration: 2, ease: 'expo.out' }, '<')
     .from('#sponsor-bar', { y: 75, duration: 1.5, ease: 'expo.out' }, '<1')
     .from('#bottom-bar', { y: -75, duration: 1.5, ease: 'expo.out' }, '<')
     .addPause()
