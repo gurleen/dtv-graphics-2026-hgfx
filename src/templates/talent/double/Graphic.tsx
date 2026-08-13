@@ -10,7 +10,7 @@ export default function TalentDoubleGraphic({
   props,
   onScreen,
 }: TemplateRenderProps<TalentDoubleProps>) {
-  const scope = useGsapPlayout(onScreen, talentDoubleAnimation)
+  const { scope } = useGsapPlayout(onScreen, talentDoubleAnimation)
 
   return (
     <HtmlCanvas>

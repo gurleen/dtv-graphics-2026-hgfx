@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import { useGsapPlayout } from '../../../lib/gsap'
 import { TALENT_FONT } from '../shared'
-import { PlayoutButtons } from '../../shared/ShowcaseChrome'
+import { PlayoutSwitch, ShowcaseStage } from '../../shared/ShowcaseChrome'
 import { talentDoubleAnimation } from './animation'
 import { TalentDoubleLayout } from './Layout'
 import { talentDoubleDefaults } from './schema'
@@ -12,19 +12,19 @@ const TALENT_PREVIEW_HEADROOM = 80
 
 export default function TalentDoubleShowcase({ autoIn = false }: { autoIn?: boolean }) {
   const [onScreen, setOnScreen] = useState(autoIn)
-  const scope = useGsapPlayout(onScreen, talentDoubleAnimation)
+  const { scope, isAnimating } = useGsapPlayout(onScreen, talentDoubleAnimation)
 
   return (
     <div>
-      <PlayoutButtons
+      <PlayoutSwitch
         onScreen={onScreen}
-        onIn={() => setOnScreen(true)}
-        onOut={() => setOnScreen(false)}
+        onChange={setOnScreen}
+        disabled={isAnimating}
       />
-      <div
+      <ShowcaseStage
+        width={TALENT_DOUBLE_WIDTH}
+        height={TALENT_DOUBLE_HEIGHT + TALENT_PREVIEW_HEADROOM}
         style={{
-          width: TALENT_DOUBLE_WIDTH,
-          height: TALENT_DOUBLE_HEIGHT + TALENT_PREVIEW_HEADROOM,
           overflow: 'hidden',
           background: '#000',
           display: 'flex',
@@ -48,7 +48,7 @@ export default function TalentDoubleShowcase({ autoIn = false }: { autoIn?: bool
             logoUrl={talentDoubleDefaults.logoUrl}
           />
         </div>
-      </div>
+      </ShowcaseStage>
     </div>
   )
 }

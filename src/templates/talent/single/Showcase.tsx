@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import { useGsapPlayout } from '../../../lib/gsap'
 import { TALENT_FONT } from '../shared'
-import { PlayoutButtons } from '../../shared/ShowcaseChrome'
+import { PlayoutSwitch, ShowcaseStage } from '../../shared/ShowcaseChrome'
 import { talentSingleAnimation } from './animation'
 import { TalentSingleLayout } from './Layout'
 import { talentSingleDefaults } from './schema'
@@ -12,19 +12,19 @@ const TALENT_PREVIEW_HEADROOM = 80
 
 export default function TalentSingleShowcase({ autoIn = false }: { autoIn?: boolean }) {
   const [onScreen, setOnScreen] = useState(autoIn)
-  const scope = useGsapPlayout(onScreen, talentSingleAnimation)
+  const { scope, isAnimating } = useGsapPlayout(onScreen, talentSingleAnimation)
 
   return (
     <div>
-      <PlayoutButtons
+      <PlayoutSwitch
         onScreen={onScreen}
-        onIn={() => setOnScreen(true)}
-        onOut={() => setOnScreen(false)}
+        onChange={setOnScreen}
+        disabled={isAnimating}
       />
-      <div
+      <ShowcaseStage
+        width={TALENT_SINGLE_WIDTH}
+        height={TALENT_SINGLE_HEIGHT + TALENT_PREVIEW_HEADROOM}
         style={{
-          width: TALENT_SINGLE_WIDTH,
-          height: TALENT_SINGLE_HEIGHT + TALENT_PREVIEW_HEADROOM,
           overflow: 'hidden',
           background: '#000',
           display: 'flex',
@@ -44,7 +44,7 @@ export default function TalentSingleShowcase({ autoIn = false }: { autoIn?: bool
             lastName={talentSingleDefaults.lastName}
           />
         </div>
-      </div>
+      </ShowcaseStage>
     </div>
   )
 }

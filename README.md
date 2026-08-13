@@ -109,7 +109,7 @@ function animation(tl: gsap.core.Timeline, root: HTMLElement) {
 }
 
 export default function MyGraphic({ onScreen }: TemplateRenderProps<Props>) {
-  const scope = useGsapPlayout(onScreen, animation)
+  const { scope } = useGsapPlayout(onScreen, animation)
   return (
     <HtmlCanvas>
       <div ref={scope} style={{ width: '100%', height: '100%' }}>

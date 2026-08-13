@@ -9,7 +9,7 @@ import {
 } from './Layout'
 import { matchupAnimation } from './animation'
 import { matchupDefaults } from './schema'
-import { PlayoutButtons } from '../shared/ShowcaseChrome'
+import { PlayoutSwitch, ShowcaseStage } from '../shared/ShowcaseChrome'
 import {
   SHOWCASE_AWAY_TEAM_ID,
   SHOWCASE_HOME_TEAM_ID,
@@ -30,7 +30,7 @@ export default function MatchupShowcase({
   awayLogoScale?: number
 }) {
   const [onScreen, setOnScreen] = useState(autoIn)
-  const scope = useGsapPlayout(onScreen, matchupAnimation, [
+  const { scope, isAnimating } = useGsapPlayout(onScreen, matchupAnimation, [
     homeLogoScale,
     awayLogoScale,
   ])
@@ -40,18 +40,15 @@ export default function MatchupShowcase({
 
   return (
     <div>
-      <PlayoutButtons
+      <PlayoutSwitch
         onScreen={onScreen}
-        onIn={() => setOnScreen(true)}
-        onOut={() => setOnScreen(false)}
+        onChange={setOnScreen}
+        disabled={isAnimating}
       />
-      <div
-        style={{
-          width: MATCHUP_WIDTH * MATCHUP_PREVIEW_SCALE,
-          height: (MATCHUP_HEIGHT + MATCHUP_HEADROOM) * MATCHUP_PREVIEW_SCALE,
-          overflow: 'hidden',
-          background: '#000',
-        }}
+      <ShowcaseStage
+        width={MATCHUP_WIDTH * MATCHUP_PREVIEW_SCALE}
+        height={(MATCHUP_HEIGHT + MATCHUP_HEADROOM) * MATCHUP_PREVIEW_SCALE}
+        style={{ overflow: 'hidden', background: '#000' }}
       >
         <div
           ref={scope}
@@ -75,7 +72,7 @@ export default function MatchupShowcase({
             awayLogoScale={awayLogoScale}
           />
         </div>
-      </div>
+      </ShowcaseStage>
     </div>
   )
 }

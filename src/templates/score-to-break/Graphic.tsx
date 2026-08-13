@@ -15,7 +15,7 @@ export default function ScoreToBreakGraphic({
   props,
   onScreen,
 }: TemplateRenderProps<ScoreToBreakProps>) {
-  const scope = useGsapPlayout(onScreen, scoreToBreakAnimation)
+  const { scope } = useGsapPlayout(onScreen, scoreToBreakAnimation)
 
   const homeTeam = findTeam(props.homeTeamId)
   const awayTeam = findTeam(props.awayTeamId)

@@ -10,7 +10,7 @@ export default function TalentSingleGraphic({
   props,
   onScreen,
 }: TemplateRenderProps<TalentSingleProps>) {
-  const scope = useGsapPlayout(onScreen, talentSingleAnimation)
+  const { scope } = useGsapPlayout(onScreen, talentSingleAnimation)
 
   return (
     <HtmlCanvas>

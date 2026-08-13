@@ -4,7 +4,7 @@ import { findTeam } from '../../data/teams'
 import { DEFAULT_SPONSOR_LOGO } from '../matchup/assets'
 import { STB_FONT, STB_LOGO_SCALE, ScoreToBreakLayout } from './Layout'
 import { scoreToBreakAnimation } from './animation'
-import { PlayoutButtons } from '../shared/ShowcaseChrome'
+import { PlayoutSwitch, ShowcaseStage } from '../shared/ShowcaseChrome'
 import {
   SHOWCASE_AWAY_TEAM_ID,
   SHOWCASE_HOME_TEAM_ID,
@@ -23,28 +23,26 @@ export default function ScoreToBreakShowcase({
   awayLogoScale?: number
 }) {
   const [onScreen, setOnScreen] = useState(autoIn)
-  const scope = useGsapPlayout(onScreen, scoreToBreakAnimation, [
-    homeLogoScale,
-    awayLogoScale,
-  ])
+  const { scope, isAnimating } = useGsapPlayout(
+    onScreen,
+    scoreToBreakAnimation,
+    [homeLogoScale, awayLogoScale],
+  )
 
   const homeTeam = findTeam(SHOWCASE_HOME_TEAM_ID)
   const awayTeam = findTeam(SHOWCASE_AWAY_TEAM_ID)
 
   return (
     <div>
-      <PlayoutButtons
+      <PlayoutSwitch
         onScreen={onScreen}
-        onIn={() => setOnScreen(true)}
-        onOut={() => setOnScreen(false)}
+        onChange={setOnScreen}
+        disabled={isAnimating}
       />
-      <div
-        style={{
-          width: STB_WIDTH,
-          height: STB_HEIGHT,
-          overflow: 'hidden',
-          background: '#000',
-        }}
+      <ShowcaseStage
+        width={STB_WIDTH}
+        height={STB_HEIGHT}
+        style={{ overflow: 'hidden', background: '#000' }}
       >
         <div
           ref={scope}
@@ -65,7 +63,7 @@ export default function ScoreToBreakShowcase({
             awayLogoScale={awayLogoScale}
           />
         </div>
-      </div>
+      </ShowcaseStage>
     </div>
   )
 }

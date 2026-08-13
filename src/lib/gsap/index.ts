@@ -5,5 +5,5 @@ import { DrawSVGPlugin } from 'gsap/DrawSVGPlugin'
 gsap.registerPlugin(useGSAP, DrawSVGPlugin)
 
 export type { AnimationFunc } from './types'
-export { useGsapPlayout } from './useGsapPlayout'
+export { useGsapPlayout, type GsapPlayout } from './useGsapPlayout'
 export { useGsapToggle } from './useGsapToggle'

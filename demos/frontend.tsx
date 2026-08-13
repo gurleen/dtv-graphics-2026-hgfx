@@ -57,7 +57,7 @@ function Demo() {
         CAA wordmark draws in with a glow, then slams into the conference box.
         Score to break rows slam from the center, then logos and scores slide
         in. Talent panels use clipped plate motion with sheen on every plate.
-        Use IN / OUT to take any graphic.
+        Use the IN / OUT switch to take any graphic.
       </p>
 
       <section style={{ marginBottom: 56 }}>

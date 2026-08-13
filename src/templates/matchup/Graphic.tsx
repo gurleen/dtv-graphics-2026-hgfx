@@ -22,7 +22,7 @@ export default function MatchupGraphic({
   props,
   onScreen,
 }: TemplateRenderProps<MatchupProps>) {
-  const scope = useGsapPlayout(onScreen, matchupAnimation)
+  const { scope } = useGsapPlayout(onScreen, matchupAnimation)
 
   const homeTeam = findTeam(props.homeTeamId)
   const awayTeam = findTeam(props.awayTeamId)
