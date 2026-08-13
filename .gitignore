@@ -3,3 +3,4 @@ dist/
 *.hgfx.js
 .DS_Store
 *.log
+.codegraph/
