@@ -42,13 +42,14 @@ Use `top: 700` (or an equivalent absolute park) for full-width lower-third bars 
 | Sponsor chrome | `#141414` | Presenter / sponsor bar |
 | Conference / empty team | `#141515` | CAA plate; missing-team fill |
 | Team fill | `team.color` (`#` prefixed if needed) | Home / away plates |
+| Team plate border | mix of `team.color` ~15% toward white if luminance is below 0.35, else toward black | 1px hairline on team plates only (`teamPlateBorderStyle`). Not `alternate_color`. |
 | Light footer | `#F0F0F0` | Venue / location bar |
 | Ink on dark | `#FFFFFF` | Presenter, school names, CAA wordmark |
 | Ink on light | `#000000` | Venue line |
 | Ghost ticker | `rgba(255,255,255,0.08)` | Mascot repeat behind the team plate |
 | CAA stroke / fill | `#FEFEFE` | Wordmark draw-in |
 
-Talent panels stay on `#D3D1D1` / `#131313` (see `src/templates/talent/shared/constants.ts`). Do not mix those fills into matchup-family bars.
+Talent panels stay on `#D3D1D1` / `#131313` (see `src/templates/talent/shared/constants.ts`). Do not mix those fills into matchup-family bars. Do not put the team-plate hairline on talent panels; the dark footer already silhouettes the light plate.
 
 ## Type
 
@@ -85,6 +86,8 @@ box-shadow: inset 0 1px 0 rgba(0,0,0,0.12), inset 0 -1px 0 rgba(255,255,255,0.35
 ```
 
 Reuse this treatment rather than inventing a new gradient per template.
+
+**Team-color plates** also get a 1px related-hue outline (`box-sizing: border-box` so geometry stays 189 / 168). Sheen is the material; the hairline traces the plate against video and against chrome. Do not border conference, sponsor, score, or footer plates — those seams are already defined by the team stroke. Helper: [`src/templates/shared/teamPlateBorder.ts`](../src/templates/shared/teamPlateBorder.ts).
 
 **Foreground on team color:**
 
@@ -151,12 +154,13 @@ Split **layout** (`Layout.tsx`) from **timeline** (`animation.ts`) from **HYDRA 
 **Do**
 
 - Clip motion with wrappers; animate `x` / `xPercent` / `y`.
-- Share sheen, font, knockout logos, and name wrapping across new team plates.
+- Share sheen, font, knockout logos, name wrapping, and the team-plate hairline across new team plates.
 - Iterate intros on `demos/` with IN / OUT driving `onScreen`.
 
 **Don't**
 
 - Introduce a second display face, rounded plates, or outer drop shadows.
+- Outline chrome plates (conference, sponsor, score, footer) or use `alternate_color` as a stroke.
 - Put color logos on team-color fills.
 - Rebuild SVG markup on every take-in (breaks DrawSVG).
 - Use `marginTop` to park a full-width bar in `HtmlCanvas`.

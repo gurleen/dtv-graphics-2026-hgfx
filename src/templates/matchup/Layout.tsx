@@ -2,6 +2,7 @@ import { useLayoutEffect, useRef, type CSSProperties } from 'react'
 import { Row, Column, Flex, Text, Image } from '@hydra-tv/hydra-gfx-runtime'
 import { CroppedImage } from '../../components/CroppedImage'
 import { getTeamKnockoutLogo, type TeamInfo } from '../../data/teams'
+import { teamPlateBorderStyle } from '../shared/teamPlateBorder'
 import caaWhiteSvg from '../talent/shared/assets/caa-white.svg' with { type: 'text' }
 
 export const MATCHUP_FONT = 'Zuume, system-ui, sans-serif'
@@ -316,11 +317,19 @@ function TeamBox({
   const mascot = team?.mascot.toUpperCase() ?? ''
   const clipWidth = logoBoxWidth(logoScale)
   const schoolLines = school ? wrapSchoolName(school) : [' ']
+  const fill = teamFill(team?.color)
 
   return (
     <div
       id={`${idPrefix}-box`}
-      style={{ ...SHELL, overflow: 'hidden', background: teamFill(team?.color) }}
+      style={{
+        ...SHELL,
+        ...teamPlateBorderStyle(fill),
+        overflow: 'hidden',
+        width: teamBoxWidth(logoScale),
+        height: MATCHUP_LOGO_HEIGHT,
+        background: fill,
+      }}
     >
       {mascot ? <MascotTicker mascot={mascot} isHome={isHome} /> : null}
       <ShapeSheen variant="dark" />

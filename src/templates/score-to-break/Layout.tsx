@@ -2,6 +2,7 @@ import { type CSSProperties } from 'react'
 import { Row, Column, Image } from '@hydra-tv/hydra-gfx-runtime'
 import { CroppedImage } from '../../components/CroppedImage'
 import { getTeamKnockoutLogo, type TeamInfo } from '../../data/teams'
+import { teamPlateBorderStyle } from '../shared/teamPlateBorder'
 
 export const STB_FONT = 'Zuume, system-ui, sans-serif'
 export const STB_LOGO_SCALE = 1.8
@@ -187,16 +188,18 @@ function TeamBox({
   const idPrefix = isHome ? 'home' : 'away'
   const logoUrl = team ? getTeamKnockoutLogo(team) : ''
   const mascot = team?.mascot.toUpperCase() ?? ''
+  const fill = teamFill(team?.color)
 
   return (
     <div
       id={`${idPrefix}-box`}
       style={{
         ...SHELL,
+        ...teamPlateBorderStyle(fill),
         overflow: 'hidden',
         width: TEAM_WIDTH,
         height: TEAM_HEIGHT,
-        background: teamFill(team?.color),
+        background: fill,
       }}
     >
       {mascot ? <MascotTicker mascot={mascot} isHome={isHome} /> : null}
