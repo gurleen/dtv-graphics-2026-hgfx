@@ -13,10 +13,6 @@ export type MatchupProps = {
   location: string
   /** Optional override; empty uses the bundled Independence logo. */
   sponsorLogoUrl: string
-  /** Optional override; empty uses the bundled CAA logo. */
-  basketballConfLogoUrl: string
-  /** Optional override; empty uses the bundled EIWA logo. */
-  wrestlingConfLogoUrl: string
 }
 
 export const matchupDefaults: MatchupProps = {
@@ -28,8 +24,6 @@ export const matchupDefaults: MatchupProps = {
   venue: 'DASKALAKIS ATHLETIC CENTER',
   location: 'PHILADELPHIA, PA',
   sponsorLogoUrl: '',
-  basketballConfLogoUrl: '',
-  wrestlingConfLogoUrl: '',
 }
 
 export const matchupSchema = z.object({
@@ -41,8 +35,6 @@ export const matchupSchema = z.object({
   venue: z.string(),
   location: z.string(),
   sponsorLogoUrl: z.string(),
-  basketballConfLogoUrl: z.string(),
-  wrestlingConfLogoUrl: z.string(),
 }) satisfies z.ZodType<MatchupProps>
 
 export const matchupTemplateSchema: TemplateSchema<MatchupProps> = {
@@ -83,8 +75,6 @@ export const matchupTemplateSchema: TemplateSchema<MatchupProps> = {
     venue: { label: 'Venue', section: 'CONTENT' },
     location: { label: 'Location', section: 'CONTENT' },
     sponsorLogoUrl: { label: 'Sponsor logo URL override', section: 'BRAND' },
-    basketballConfLogoUrl: { label: 'Basketball conf logo URL override', section: 'BRAND' },
-    wrestlingConfLogoUrl: { label: 'Wrestling conf logo URL override', section: 'BRAND' },
   },
   transition: { inMs: 2500, outMs: 500 },
   live: {

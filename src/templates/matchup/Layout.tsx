@@ -1,7 +1,8 @@
 import type { CSSProperties } from 'react'
-import { Rect, Row, Column, Flex, Text, Image } from '@hydra-tv/hydra-gfx-runtime'
+import { Row, Column, Flex, Text, Image } from '@hydra-tv/hydra-gfx-runtime'
 import { CroppedImage } from '../../components/CroppedImage'
 import { getTeamKnockoutLogo, type TeamInfo } from '../../data/teams'
+import { CAA_WHITE_LOGO } from '../talent/shared/caaWhiteLogo'
 
 export const MATCHUP_FONT = 'Zuume, system-ui, sans-serif'
 export const MATCHUP_LOGO_SCALE = 2
@@ -53,7 +54,6 @@ function confBoxWidth(homeLogoScale: number, awayLogoScale: number): number {
 export type MatchupLayoutProps = {
   presenter: string
   sponsorLogoUrl: string
-  confLogoUrl: string
   venue: string
   location: string
   homeTeam: TeamInfo | undefined
@@ -110,7 +110,6 @@ const TEAM_FOREGROUND_SHADOW: CSSProperties = {
 export function MatchupLayout({
   presenter,
   sponsorLogoUrl,
-  confLogoUrl,
   venue,
   location,
   homeTeam,
@@ -127,10 +126,7 @@ export function MatchupLayout({
       <div style={{ overflow: 'hidden' }}>
         <Row width={1920} height={189} align="stretch" justify="start">
           <TeamBox isHome={false} team={awayTeam} logoScale={awayLogoScale} />
-          <ConfBox
-            confLogoUrl={confLogoUrl}
-            width={confBoxWidth(homeLogoScale, awayLogoScale)}
-          />
+          <ConfBox width={confBoxWidth(homeLogoScale, awayLogoScale)} />
           <TeamBox isHome={true} team={homeTeam} logoScale={homeLogoScale} />
         </Row>
       </div>
@@ -172,7 +168,7 @@ function SponsorBar({
   )
 }
 
-function ConfBox({ confLogoUrl, width }: { confLogoUrl: string; width: number }) {
+function ConfBox({ width }: { width: number }) {
   const logoWidth = Math.max(width - 40, 80)
   return (
     <div id="caa-box" style={{ ...SHELL, background: '#141515' }}>
@@ -180,11 +176,7 @@ function ConfBox({ confLogoUrl, width }: { confLogoUrl: string; width: number })
       <div style={SHELL_CONTENT}>
         <Row width={width} height={189} justify="center" align="center" padding={20}>
           <div id="caa-logo">
-            {confLogoUrl ? (
-              <Image src={confLogoUrl} width={logoWidth} height={140} fit="contain" alt="" />
-            ) : (
-              <Rect fill="transparent" width={logoWidth} height={140} />
-            )}
+            <Image src={CAA_WHITE_LOGO} width={logoWidth} height={140} fit="contain" alt="" />
           </div>
         </Row>
       </div>

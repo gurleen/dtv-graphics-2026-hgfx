@@ -1,10 +1,7 @@
 import { useState } from 'react'
 import { createRoot } from 'react-dom/client'
 import { DREXEL_TEAM_ID, findTeam } from '../src/data/teams'
-import {
-  DEFAULT_BASKETBALL_CONF_LOGO,
-  DEFAULT_SPONSOR_LOGO,
-} from '../src/templates/matchup/assets'
+import { DEFAULT_SPONSOR_LOGO } from '../src/templates/matchup/assets'
 import {
   MATCHUP_FONT,
   MATCHUP_LOGO_SCALE,
@@ -106,7 +103,6 @@ function Demo() {
             <MatchupLayout
               presenter="DREXEL BASKETBALL PRESENTED BY"
               sponsorLogoUrl={DEFAULT_SPONSOR_LOGO}
-              confLogoUrl={DEFAULT_BASKETBALL_CONF_LOGO}
               venue={matchupDefaults.venue}
               location={matchupDefaults.location}
               homeTeam={homeTeam}

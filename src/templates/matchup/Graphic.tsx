@@ -5,11 +5,7 @@ import { useGsapPlayout } from '../../lib/gsap'
 import type { Sport } from '../../config'
 import { findTeam } from '../../data/teams'
 import type { MatchupProps } from './schema'
-import {
-  DEFAULT_BASKETBALL_CONF_LOGO,
-  DEFAULT_SPONSOR_LOGO,
-  DEFAULT_WRESTLING_CONF_LOGO,
-} from './assets'
+import { DEFAULT_SPONSOR_LOGO } from './assets'
 import { MATCHUP_FONT, MatchupLayout } from './Layout'
 
 function animation(timeline: gsap.core.Timeline, root: HTMLElement) {
@@ -34,13 +30,6 @@ function presenterForSport(sport: Sport): string {
     : 'DREXEL BASKETBALL PRESENTED BY'
 }
 
-function confLogoForSport(props: MatchupProps): string {
-  if (props.sport === 'wrestling') {
-    return props.wrestlingConfLogoUrl || DEFAULT_WRESTLING_CONF_LOGO
-  }
-  return props.basketballConfLogoUrl || DEFAULT_BASKETBALL_CONF_LOGO
-}
-
 function sponsorLogoUrl(props: MatchupProps): string {
   return props.sponsorLogoUrl || DEFAULT_SPONSOR_LOGO
 }
@@ -53,7 +42,6 @@ export default function MatchupGraphic({
 
   const homeTeam = findTeam(props.homeTeamId)
   const awayTeam = findTeam(props.awayTeamId)
-  const confLogo = confLogoForSport(props)
   const sponsorLogo = sponsorLogoUrl(props)
   const presenter = presenterForSport(props.sport)
 
@@ -72,7 +60,6 @@ export default function MatchupGraphic({
           <MatchupLayout
             presenter={presenter}
             sponsorLogoUrl={sponsorLogo}
-            confLogoUrl={confLogo}
             venue={props.venue}
             location={props.location}
             homeTeam={homeTeam}
