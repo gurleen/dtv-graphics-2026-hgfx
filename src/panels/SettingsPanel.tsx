@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useState } from 'react'
-import { Button, Select, SideNav } from '@hydra-tv/ui'
+import { Button, Combobox, SideNav } from '@hydra-tv/ui'
 import type { PackagePanelProps } from '@hydra-tv/hydra-gfx-runtime/types'
 import {
   type PackageConfig,
@@ -228,13 +228,14 @@ function TeamSelect({
       )}
 
       <div style={{ display: 'flex', gap: 8, alignItems: 'center' }}>
-        <Select
+        <Combobox
           value={selectValue}
           options={options}
           width="100%"
+          placeholder="Search teams…"
           onChange={(v) => {
             const id = Number(v)
-            if (Number.isFinite(id)) setDraftId(id)
+            if (Number.isFinite(id) && id > 0) setDraftId(id)
           }}
           style={{ flex: 1, minWidth: 0 }}
         />
