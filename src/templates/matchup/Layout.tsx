@@ -2,7 +2,7 @@ import type { CSSProperties } from 'react'
 import { Row, Column, Flex, Text, Image } from '@hydra-tv/hydra-gfx-runtime'
 import { CroppedImage } from '../../components/CroppedImage'
 import { getTeamKnockoutLogo, type TeamInfo } from '../../data/teams'
-import { CAA_WHITE_LOGO } from '../talent/shared/caaWhiteLogo'
+import caaWhiteSvg from '../talent/shared/assets/caa-white.svg' with { type: 'text' }
 
 export const MATCHUP_FONT = 'Zuume, system-ui, sans-serif'
 export const MATCHUP_LOGO_SCALE = 2
@@ -33,6 +33,12 @@ const TICKER_CSS = `
 }
 .matchup-ticker-out-right {
   animation: matchup-ticker-out-right 18s linear infinite;
+}
+#caa-logo svg {
+  display: block;
+  width: 100%;
+  height: 100%;
+  overflow: visible;
 }
 `
 
@@ -123,13 +129,15 @@ export function MatchupLayout({
       <div style={{ overflow: 'hidden' }}>
         <SponsorBar presenter={presenter} sponsorLogoUrl={sponsorLogoUrl} />
       </div>
-      <div style={{ overflow: 'hidden' }}>
-        <Row width={1920} height={189} align="stretch" justify="start">
+      <Row width={1920} height={189} align="stretch" justify="start">
+        <div style={{ overflow: 'hidden' }}>
           <TeamBox isHome={false} team={awayTeam} logoScale={awayLogoScale} />
-          <ConfBox width={confBoxWidth(homeLogoScale, awayLogoScale)} />
+        </div>
+        <ConfBox width={confBoxWidth(homeLogoScale, awayLogoScale)} />
+        <div style={{ overflow: 'hidden' }}>
           <TeamBox isHome={true} team={homeTeam} logoScale={homeLogoScale} />
-        </Row>
-      </div>
+        </div>
+      </Row>
       <div style={{ overflow: 'hidden' }}>
         <BottomBar venue={venue} location={location} />
       </div>
@@ -171,13 +179,44 @@ function SponsorBar({
 function ConfBox({ width }: { width: number }) {
   const logoWidth = Math.max(width - 40, 80)
   return (
-    <div id="caa-box" style={{ ...SHELL, background: '#141515' }}>
-      <ShapeSheen variant="dark" />
+    <div style={{ ...SHELL, overflow: 'visible', width }}>
+      <div
+        id="caa-box"
+        style={{
+          ...SHELL,
+          position: 'absolute',
+          inset: 0,
+          overflow: 'hidden',
+          background: '#141515',
+          visibility: 'hidden',
+          opacity: 0,
+        }}
+      >
+        <ShapeSheen variant="dark" />
+        <div
+          id="caa-ripple"
+          aria-hidden
+          style={{
+            position: 'absolute',
+            left: '50%',
+            top: '50%',
+            width: '140%',
+            aspectRatio: '1',
+            borderRadius: '50%',
+            pointerEvents: 'none',
+            zIndex: 1,
+            background:
+              'radial-gradient(circle, rgba(255,255,255,0) 0%, rgba(255,255,255,0) 32%, rgba(255,255,255,0.28) 44%, rgba(255,255,255,0.06) 58%, rgba(255,255,255,0) 70%)',
+          }}
+        />
+      </div>
       <div style={SHELL_CONTENT}>
         <Row width={width} height={189} justify="center" align="center" padding={20}>
-          <div id="caa-logo">
-            <Image src={CAA_WHITE_LOGO} width={logoWidth} height={140} fit="contain" alt="" />
-          </div>
+          <div
+            id="caa-logo"
+            style={{ width: logoWidth, height: 140, overflow: 'visible' }}
+            dangerouslySetInnerHTML={{ __html: caaWhiteSvg }}
+          />
         </Row>
       </div>
     </div>

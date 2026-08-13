@@ -1,7 +1,8 @@
 import { useGSAP } from '@gsap/react'
 import gsap from 'gsap'
+import { DrawSVGPlugin } from 'gsap/DrawSVGPlugin'
 
-gsap.registerPlugin(useGSAP)
+gsap.registerPlugin(useGSAP, DrawSVGPlugin)
 
 export type { AnimationFunc } from './types'
 export { useGsapPlayout } from './useGsapPlayout'

@@ -76,7 +76,7 @@ export const matchupTemplateSchema: TemplateSchema<MatchupProps> = {
     location: { label: 'Location', section: 'CONTENT' },
     sponsorLogoUrl: { label: 'Sponsor logo URL override', section: 'BRAND' },
   },
-  transition: { inMs: 2500, outMs: 500 },
+  transition: { inMs: 4200, outMs: 500 },
   live: {
     bind: {
       sport: 'config.sport',

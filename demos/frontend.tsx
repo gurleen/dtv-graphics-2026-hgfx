@@ -1,6 +1,8 @@
 import { useState } from 'react'
 import { createRoot } from 'react-dom/client'
-import { DREXEL_TEAM_ID, findTeam } from '../src/data/teams'
+import { useGsapPlayout } from '../src/lib/gsap'
+import { DREXEL_TEAM_ID, findTeam, type TeamInfo } from '../src/data/teams'
+import { matchupAnimation } from '../src/templates/matchup/animation'
 import { DEFAULT_SPONSOR_LOGO } from '../src/templates/matchup/assets'
 import {
   MATCHUP_FONT,
@@ -18,6 +20,7 @@ const DELAWARE_TEAM_ID = 48
 const MATCHUP_PREVIEW_SCALE = 0.55
 const MATCHUP_WIDTH = 1920
 const MATCHUP_HEIGHT = 72 + 189 + 61
+const MATCHUP_HEADROOM = 140
 
 function ScaleSlider({
   label,
@@ -46,6 +49,78 @@ function ScaleSlider({
   )
 }
 
+function MatchupPreview({
+  homeTeam,
+  awayTeam,
+  homeLogoScale,
+  awayLogoScale,
+}: {
+  homeTeam: TeamInfo | undefined
+  awayTeam: TeamInfo | undefined
+  homeLogoScale: number
+  awayLogoScale: number
+}) {
+  const [take, setTake] = useState(0)
+  const scope = useGsapPlayout(true, matchupAnimation, [
+    take,
+    homeLogoScale,
+    awayLogoScale,
+  ])
+
+  return (
+    <div>
+      <button
+        type="button"
+        onClick={() => setTake((n) => n + 1)}
+        style={{
+          marginBottom: 16,
+          padding: '8px 16px',
+          fontWeight: 700,
+          fontSize: 14,
+          color: '#111',
+          background: '#f5f5f5',
+          border: 'none',
+          borderRadius: 4,
+          cursor: 'pointer',
+        }}
+      >
+        Replay intro
+      </button>
+      <div
+        style={{
+          width: MATCHUP_WIDTH * MATCHUP_PREVIEW_SCALE,
+          height: (MATCHUP_HEIGHT + MATCHUP_HEADROOM) * MATCHUP_PREVIEW_SCALE,
+          overflow: 'hidden',
+          background: '#000',
+        }}
+      >
+        <div
+          ref={scope}
+          style={{
+            width: MATCHUP_WIDTH,
+            height: MATCHUP_HEIGHT + MATCHUP_HEADROOM,
+            transform: `scale(${MATCHUP_PREVIEW_SCALE})`,
+            transformOrigin: 'top left',
+            fontFamily: MATCHUP_FONT,
+            paddingTop: MATCHUP_HEADROOM,
+          }}
+        >
+          <MatchupLayout
+            presenter="DREXEL BASKETBALL PRESENTED BY"
+            sponsorLogoUrl={DEFAULT_SPONSOR_LOGO}
+            venue={matchupDefaults.venue}
+            location={matchupDefaults.location}
+            homeTeam={homeTeam}
+            awayTeam={awayTeam}
+            homeLogoScale={homeLogoScale}
+            awayLogoScale={awayLogoScale}
+          />
+        </div>
+      </div>
+    </div>
+  )
+}
+
 function Demo() {
   const [matchupHomeScale, setMatchupHomeScale] = useState(MATCHUP_LOGO_SCALE)
   const [matchupAwayScale, setMatchupAwayScale] = useState(MATCHUP_LOGO_SCALE)
@@ -65,11 +140,13 @@ function Demo() {
         padding: 40,
       }}
     >
-      <h1 style={{ fontSize: 28, fontWeight: 700, margin: '0 0 8px' }}>Logo crop scales</h1>
+      <h1 style={{ fontSize: 28, fontWeight: 700, margin: '0 0 8px' }}>
+        Matchup intro
+      </h1>
       <p style={{ color: '#9aa0a6', margin: '0 0 40px', maxWidth: 720, lineHeight: 1.5 }}>
-        Same layouts as the on-air graphics, no animation. Matchup clip box widens with
-        scale so the logo stays full-width (top/bottom crop only). Score to break fills
-        the team color box.
+        CAA wordmark draws in with a glow, then slams into the conference box.
+        Replay the intro to iterate. Logo-scale sliders still widen the team clip
+        boxes. Score to break is a static layout preview.
       </p>
 
       <section style={{ marginBottom: 56 }}>
@@ -84,34 +161,12 @@ function Demo() {
           value={matchupAwayScale}
           onChange={setMatchupAwayScale}
         />
-        <div
-          style={{
-            width: MATCHUP_WIDTH * MATCHUP_PREVIEW_SCALE,
-            height: MATCHUP_HEIGHT * MATCHUP_PREVIEW_SCALE,
-            overflow: 'hidden',
-          }}
-        >
-          <div
-            style={{
-              width: MATCHUP_WIDTH,
-              height: MATCHUP_HEIGHT,
-              transform: `scale(${MATCHUP_PREVIEW_SCALE})`,
-              transformOrigin: 'top left',
-              fontFamily: MATCHUP_FONT,
-            }}
-          >
-            <MatchupLayout
-              presenter="DREXEL BASKETBALL PRESENTED BY"
-              sponsorLogoUrl={DEFAULT_SPONSOR_LOGO}
-              venue={matchupDefaults.venue}
-              location={matchupDefaults.location}
-              homeTeam={homeTeam}
-              awayTeam={awayTeam}
-              homeLogoScale={matchupHomeScale}
-              awayLogoScale={matchupAwayScale}
-            />
-          </div>
-        </div>
+        <MatchupPreview
+          homeTeam={homeTeam}
+          awayTeam={awayTeam}
+          homeLogoScale={matchupHomeScale}
+          awayLogoScale={matchupAwayScale}
+        />
       </section>
 
       <section>

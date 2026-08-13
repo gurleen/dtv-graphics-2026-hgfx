@@ -12,4 +12,4 @@ const server = Bun.serve({
   },
 })
 
-console.log(`Logo crop demo: ${server.url}`)
+console.log(`Matchup intro demo: ${server.url}`)
