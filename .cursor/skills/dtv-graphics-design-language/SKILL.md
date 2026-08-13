@@ -23,7 +23,7 @@ Also follow [docs/PORTING.md](../../../docs/PORTING.md) for HYDRA / GSAP wiring 
 1. Classify the graphic:
    - **Matchup family** — full-width bars, team-color plates, score bugs, conference chrome → apply the design language in full.
    - **Talent family** — light name panels (`src/templates/talent/shared/constants.ts`) → keep that inverted palette; still use Zuume, knockout CAA SVG, and GSAP intro/`addPause`/outro.
-2. Copy structure from matchup: `schema.ts` + `Graphic.tsx` + `Layout.tsx` + `animation.ts`. Do not inline a one-off visual system.
+2. Copy structure from matchup: `schema.ts` + `Graphic.tsx` + `Layout.tsx` + `animation.ts` + `Showcase.tsx`. Do not inline a one-off visual system. Register in `src/templates/registry.ts` and `src/templates/showcaseRegistry.ts` (tabs on the stakeholder page come from the registry).
 3. Reuse tokens from the doc (font, fills, sheen CSS, logo scale 1.8, name wrap at 12 chars, knockout logos). Do not invent a second sheen or type stack.
 4. Motion: clipped transforms, energy from the center outward. Never `scaleX` a plate to reveal it.
 5. Park full-width bars with `position: absolute` (matchup uses `top: 700`), not `marginTop`.
@@ -36,3 +36,4 @@ Also follow [docs/PORTING.md](../../../docs/PORTING.md) for HYDRA / GSAP wiring 
 - [ ] Knockout logos via `getTeamKnockoutLogo` + `CroppedImage`
 - [ ] `#id`s on `<div>`s; `useGsapPlayout`; outro fades `root`
 - [ ] Schema `inMs` / `outMs` match the timeline
+- [ ] `Showcase.tsx` exists and is registered in `src/templates/showcaseRegistry.ts` (keys match `templateRegistry`)

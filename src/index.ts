@@ -4,11 +4,14 @@ import {
   packageConfigFields,
   packageConfigSchema,
 } from './config'
-import { lowerThirdTemplateSchema } from './templates/lower-third/schema'
-import { matchupTemplateSchema } from './templates/matchup/schema'
-import { scoreToBreakTemplateSchema } from './templates/score-to-break/schema'
-import { talentSingleTemplateSchema } from './templates/talent/single/schema'
-import { talentDoubleTemplateSchema } from './templates/talent/double/schema'
+import { templateRegistry, type TemplateId } from './templates/registry'
+
+const templates = {
+  matchup: defineTemplate(templateRegistry.matchup),
+  'score-to-break': defineTemplate(templateRegistry['score-to-break']),
+  'talent-single': defineTemplate(templateRegistry['talent-single']),
+  'talent-double': defineTemplate(templateRegistry['talent-double']),
+} satisfies { [K in TemplateId]: ReturnType<typeof defineTemplate> }
 
 export default definePackage({
   id: 'dtv-2026',
@@ -26,32 +29,5 @@ export default definePackage({
       Panel: () => import('./panels/SettingsPanel'),
     },
   ],
-  templates: [
-    defineTemplate({
-      ...lowerThirdTemplateSchema,
-      Render: () => import('./templates/lower-third/Graphic'),
-      Controls: () => import('./templates/lower-third/Controls'),
-      PreviewControls: () => import('./templates/lower-third/Controls'),
-    }),
-    defineTemplate({
-      ...matchupTemplateSchema,
-      Render: () => import('./templates/matchup/Graphic'),
-    }),
-    defineTemplate({
-      ...scoreToBreakTemplateSchema,
-      Render: () => import('./templates/score-to-break/Graphic'),
-    }),
-    defineTemplate({
-      ...talentSingleTemplateSchema,
-      Render: () => import('./templates/talent/single/Graphic'),
-      Controls: () => import('./templates/talent/single/Controls'),
-      PreviewControls: () => import('./templates/talent/single/Controls'),
-    }),
-    defineTemplate({
-      ...talentDoubleTemplateSchema,
-      Render: () => import('./templates/talent/double/Graphic'),
-      Controls: () => import('./templates/talent/double/Controls'),
-      PreviewControls: () => import('./templates/talent/double/Controls'),
-    }),
-  ],
+  templates: Object.values(templates),
 })

@@ -1,41 +1,11 @@
 import { useState } from 'react'
 import { createRoot } from 'react-dom/client'
-import { useGsapPlayout } from '../src/lib/gsap'
-import { DREXEL_TEAM_ID, findTeam, type TeamInfo } from '../src/data/teams'
-import { matchupAnimation } from '../src/templates/matchup/animation'
-import { DEFAULT_SPONSOR_LOGO } from '../src/templates/matchup/assets'
-import {
-  MATCHUP_FONT,
-  MATCHUP_LOGO_SCALE,
-  MatchupLayout,
-} from '../src/templates/matchup/Layout'
-import { matchupDefaults } from '../src/templates/matchup/schema'
-import { scoreToBreakAnimation } from '../src/templates/score-to-break/animation'
-import {
-  STB_FONT,
-  STB_LOGO_SCALE,
-  ScoreToBreakLayout,
-} from '../src/templates/score-to-break/Layout'
-import { talentSingleAnimation } from '../src/templates/talent/single/animation'
-import { TalentSingleLayout } from '../src/templates/talent/single/Layout'
-import { talentSingleDefaults } from '../src/templates/talent/single/schema'
-import { talentDoubleAnimation } from '../src/templates/talent/double/animation'
-import { TalentDoubleLayout } from '../src/templates/talent/double/Layout'
-import { talentDoubleDefaults } from '../src/templates/talent/double/schema'
-import { TALENT_FONT } from '../src/templates/talent/shared'
-
-const DELAWARE_TEAM_ID = 48
-const MATCHUP_PREVIEW_SCALE = 0.55
-const MATCHUP_WIDTH = 1920
-const MATCHUP_HEIGHT = 72 + 189 + 61
-const MATCHUP_HEADROOM = 140
-const STB_WIDTH = 437
-const STB_HEIGHT = 168 + 168 + 37
-const TALENT_SINGLE_WIDTH = 400
-const TALENT_SINGLE_HEIGHT = 100
-const TALENT_DOUBLE_WIDTH = 726
-const TALENT_DOUBLE_HEIGHT = 44 + 149
-const TALENT_PREVIEW_HEADROOM = 80
+import { MATCHUP_LOGO_SCALE } from '../src/templates/matchup/Layout'
+import MatchupShowcase from '../src/templates/matchup/Showcase'
+import { STB_LOGO_SCALE } from '../src/templates/score-to-break/Layout'
+import ScoreToBreakShowcase from '../src/templates/score-to-break/Showcase'
+import TalentSingleShowcase from '../src/templates/talent/single/Showcase'
+import TalentDoubleShowcase from '../src/templates/talent/double/Showcase'
 
 function ScaleSlider({
   label,
@@ -64,296 +34,11 @@ function ScaleSlider({
   )
 }
 
-const PLAYOUT_BTN = {
-  padding: '8px 20px',
-  fontWeight: 700,
-  fontSize: 14,
-  border: 'none',
-  borderRadius: 4,
-  cursor: 'pointer',
-} as const
-
-function MatchupPreview({
-  homeTeam,
-  awayTeam,
-  homeLogoScale,
-  awayLogoScale,
-}: {
-  homeTeam: TeamInfo | undefined
-  awayTeam: TeamInfo | undefined
-  homeLogoScale: number
-  awayLogoScale: number
-}) {
-  const [onScreen, setOnScreen] = useState(false)
-  const scope = useGsapPlayout(onScreen, matchupAnimation, [
-    homeLogoScale,
-    awayLogoScale,
-  ])
-
-  return (
-    <div>
-      <div style={{ display: 'flex', gap: 8, marginBottom: 16 }}>
-        <button
-          type="button"
-          onClick={() => setOnScreen(true)}
-          style={{
-            ...PLAYOUT_BTN,
-            color: onScreen ? '#111' : '#f5f5f5',
-            background: onScreen ? '#7dce82' : '#333',
-          }}
-        >
-          IN
-        </button>
-        <button
-          type="button"
-          onClick={() => setOnScreen(false)}
-          style={{
-            ...PLAYOUT_BTN,
-            color: !onScreen ? '#111' : '#f5f5f5',
-            background: !onScreen ? '#e07070' : '#333',
-          }}
-        >
-          OUT
-        </button>
-      </div>
-      <div
-        style={{
-          width: MATCHUP_WIDTH * MATCHUP_PREVIEW_SCALE,
-          height: (MATCHUP_HEIGHT + MATCHUP_HEADROOM) * MATCHUP_PREVIEW_SCALE,
-          overflow: 'hidden',
-          background: '#000',
-        }}
-      >
-        <div
-          ref={scope}
-          style={{
-            width: MATCHUP_WIDTH,
-            height: MATCHUP_HEIGHT + MATCHUP_HEADROOM,
-            transform: `scale(${MATCHUP_PREVIEW_SCALE})`,
-            transformOrigin: 'top left',
-            fontFamily: MATCHUP_FONT,
-            paddingTop: MATCHUP_HEADROOM,
-          }}
-        >
-          <MatchupLayout
-            presenter="DREXEL BASKETBALL PRESENTED BY"
-            sponsorLogoUrl={DEFAULT_SPONSOR_LOGO}
-            venue={matchupDefaults.venue}
-            location={matchupDefaults.location}
-            homeTeam={homeTeam}
-            awayTeam={awayTeam}
-            homeLogoScale={homeLogoScale}
-            awayLogoScale={awayLogoScale}
-          />
-        </div>
-      </div>
-    </div>
-  )
-}
-
-function ScoreToBreakPreview({
-  homeTeam,
-  awayTeam,
-  homeLogoScale,
-  awayLogoScale,
-}: {
-  homeTeam: TeamInfo | undefined
-  awayTeam: TeamInfo | undefined
-  homeLogoScale: number
-  awayLogoScale: number
-}) {
-  const [onScreen, setOnScreen] = useState(false)
-  const scope = useGsapPlayout(onScreen, scoreToBreakAnimation, [
-    homeLogoScale,
-    awayLogoScale,
-  ])
-
-  return (
-    <div>
-      <div style={{ display: 'flex', gap: 8, marginBottom: 16 }}>
-        <button
-          type="button"
-          onClick={() => setOnScreen(true)}
-          style={{
-            ...PLAYOUT_BTN,
-            color: onScreen ? '#111' : '#f5f5f5',
-            background: onScreen ? '#7dce82' : '#333',
-          }}
-        >
-          IN
-        </button>
-        <button
-          type="button"
-          onClick={() => setOnScreen(false)}
-          style={{
-            ...PLAYOUT_BTN,
-            color: !onScreen ? '#111' : '#f5f5f5',
-            background: !onScreen ? '#e07070' : '#333',
-          }}
-        >
-          OUT
-        </button>
-      </div>
-      <div
-        style={{
-          width: STB_WIDTH,
-          height: STB_HEIGHT,
-          overflow: 'hidden',
-          background: '#000',
-        }}
-      >
-        <div
-          ref={scope}
-          style={{
-            width: STB_WIDTH,
-            height: STB_HEIGHT,
-            fontFamily: STB_FONT,
-          }}
-        >
-          <ScoreToBreakLayout
-            homeTeam={homeTeam}
-            awayTeam={awayTeam}
-            homeScore={72}
-            awayScore={68}
-            period="1ST QUARTER"
-            sponsorLogoUrl={DEFAULT_SPONSOR_LOGO}
-            homeLogoScale={homeLogoScale}
-            awayLogoScale={awayLogoScale}
-          />
-        </div>
-      </div>
-    </div>
-  )
-}
-
-function TalentSinglePreview() {
-  const [onScreen, setOnScreen] = useState(false)
-  const scope = useGsapPlayout(onScreen, talentSingleAnimation)
-
-  return (
-    <div>
-      <div style={{ display: 'flex', gap: 8, marginBottom: 16 }}>
-        <button
-          type="button"
-          onClick={() => setOnScreen(true)}
-          style={{
-            ...PLAYOUT_BTN,
-            color: onScreen ? '#111' : '#f5f5f5',
-            background: onScreen ? '#7dce82' : '#333',
-          }}
-        >
-          IN
-        </button>
-        <button
-          type="button"
-          onClick={() => setOnScreen(false)}
-          style={{
-            ...PLAYOUT_BTN,
-            color: !onScreen ? '#111' : '#f5f5f5',
-            background: !onScreen ? '#e07070' : '#333',
-          }}
-        >
-          OUT
-        </button>
-      </div>
-      <div
-        style={{
-          width: TALENT_SINGLE_WIDTH,
-          height: TALENT_SINGLE_HEIGHT + TALENT_PREVIEW_HEADROOM,
-          overflow: 'hidden',
-          background: '#000',
-          display: 'flex',
-          alignItems: 'flex-end',
-          justifyContent: 'center',
-        }}
-      >
-        <div
-          ref={scope}
-          style={{
-            width: TALENT_SINGLE_WIDTH,
-            fontFamily: TALENT_FONT,
-          }}
-        >
-          <TalentSingleLayout
-            firstName={talentSingleDefaults.firstName}
-            lastName={talentSingleDefaults.lastName}
-          />
-        </div>
-      </div>
-    </div>
-  )
-}
-
-function TalentDoublePreview() {
-  const [onScreen, setOnScreen] = useState(false)
-  const scope = useGsapPlayout(onScreen, talentDoubleAnimation)
-
-  return (
-    <div>
-      <div style={{ display: 'flex', gap: 8, marginBottom: 16 }}>
-        <button
-          type="button"
-          onClick={() => setOnScreen(true)}
-          style={{
-            ...PLAYOUT_BTN,
-            color: onScreen ? '#111' : '#f5f5f5',
-            background: onScreen ? '#7dce82' : '#333',
-          }}
-        >
-          IN
-        </button>
-        <button
-          type="button"
-          onClick={() => setOnScreen(false)}
-          style={{
-            ...PLAYOUT_BTN,
-            color: !onScreen ? '#111' : '#f5f5f5',
-            background: !onScreen ? '#e07070' : '#333',
-          }}
-        >
-          OUT
-        </button>
-      </div>
-      <div
-        style={{
-          width: TALENT_DOUBLE_WIDTH,
-          height: TALENT_DOUBLE_HEIGHT + TALENT_PREVIEW_HEADROOM,
-          overflow: 'hidden',
-          background: '#000',
-          display: 'flex',
-          alignItems: 'flex-end',
-          justifyContent: 'center',
-        }}
-      >
-        <div
-          ref={scope}
-          style={{
-            width: TALENT_DOUBLE_WIDTH,
-            fontFamily: TALENT_FONT,
-          }}
-        >
-          <TalentDoubleLayout
-            firstNameLeft={talentDoubleDefaults.firstNameLeft}
-            lastNameLeft={talentDoubleDefaults.lastNameLeft}
-            firstNameRight={talentDoubleDefaults.firstNameRight}
-            lastNameRight={talentDoubleDefaults.lastNameRight}
-            eyebrow={talentDoubleDefaults.eyebrow}
-            logoUrl={talentDoubleDefaults.logoUrl}
-          />
-        </div>
-      </div>
-    </div>
-  )
-}
-
 function Demo() {
   const [matchupHomeScale, setMatchupHomeScale] = useState(MATCHUP_LOGO_SCALE)
   const [matchupAwayScale, setMatchupAwayScale] = useState(MATCHUP_LOGO_SCALE)
   const [stbHomeScale, setStbHomeScale] = useState(STB_LOGO_SCALE)
   const [stbAwayScale, setStbAwayScale] = useState(STB_LOGO_SCALE)
-
-  const homeTeam = findTeam(DREXEL_TEAM_ID)
-  const awayTeam = findTeam(DELAWARE_TEAM_ID)
 
   return (
     <div
@@ -387,9 +72,7 @@ function Demo() {
           value={matchupAwayScale}
           onChange={setMatchupAwayScale}
         />
-        <MatchupPreview
-          homeTeam={homeTeam}
-          awayTeam={awayTeam}
+        <MatchupShowcase
           homeLogoScale={matchupHomeScale}
           awayLogoScale={matchupAwayScale}
         />
@@ -407,9 +90,7 @@ function Demo() {
           value={stbAwayScale}
           onChange={setStbAwayScale}
         />
-        <ScoreToBreakPreview
-          homeTeam={homeTeam}
-          awayTeam={awayTeam}
+        <ScoreToBreakShowcase
           homeLogoScale={stbHomeScale}
           awayLogoScale={stbAwayScale}
         />
@@ -419,14 +100,14 @@ function Demo() {
         <h2 style={{ fontSize: 20, fontWeight: 700, margin: '0 0 12px' }}>
           Talent lower third (single)
         </h2>
-        <TalentSinglePreview />
+        <TalentSingleShowcase />
       </section>
 
       <section>
         <h2 style={{ fontSize: 20, fontWeight: 700, margin: '0 0 12px' }}>
           Talent lower third (double)
         </h2>
-        <TalentDoublePreview />
+        <TalentDoubleShowcase />
       </section>
     </div>
   )

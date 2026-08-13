@@ -1,5 +1,6 @@
 node_modules/
 dist/
+showcase-dist/
 *.hgfx.js
 .DS_Store
 *.log

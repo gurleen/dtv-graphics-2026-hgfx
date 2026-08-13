@@ -18,6 +18,9 @@ Each template folder:
 ```
 schema.ts      # zod + TemplateSchema (id, route, defaults, fields, transition)
 Graphic.tsx    # default export render
+Layout.tsx     # visual (also used by Showcase)
+animation.ts   # GSAP intro / addPause / outro
+Showcase.tsx   # stakeholder + demo preview (Layout + GSAP, no HtmlCanvas)
 Controls.tsx   # optional custom controls
 ```
 
@@ -32,7 +35,7 @@ If two+ templates share panel chrome, colors, or name blocks, extract to `src/te
 | `useProps` / SPX | Zod schema + `TemplateRenderProps<Props>` |
 | `useAnimation(animFunc)` | `useGsapPlayout(onScreen, animFunc)` from `src/lib/gsap` |
 | `useSubAnimation` | `useGsapToggle` |
-| `ReactDOM.createRoot` / HTML entry | Lazy `defineTemplate` in `src/index.ts` only |
+| `ReactDOM.createRoot` / HTML entry | Lazy `Render` on `templateRegistry`; `src/index.ts` maps it |
 
 Keep the **intro → `addPause()` → outro** timeline body; copy GSAP tweens and `#id` selectors for **descendants**. Put `ref={scope}` on a wrapper that owns those ids.
 
@@ -70,11 +73,14 @@ Fonts: prefer a local stack like `Zuume, system-ui, sans-serif` (no font CDN). H
 
 ## 6. Wire the package
 
-In [`src/index.ts`](../src/index.ts):
+Do **not** add templates only in [`src/index.ts`](../src/index.ts). That file maps [`src/templates/registry.ts`](../src/templates/registry.ts).
 
-- Import **only** `*TemplateSchema` objects (eager).
-- Register with `defineTemplate({ ...schema, Render: () => import('…'), Controls: () => import('…') })`.
-- Never eager-import `Graphic.tsx` into the package entry.
+1. Add an entry to `templateRegistry` (eager schema, lazy `Render` / `Controls`). Never eager-import `Graphic.tsx` into the registry or package entry.
+2. Add `defineTemplate(templateRegistry.<id>)` in [`src/index.ts`](../src/index.ts). The `satisfies { [K in TemplateId] }` object fails if you skip this.
+3. Add `Showcase.tsx` next to `Graphic.tsx` — Layout + GSAP + IN/OUT chrome (see `src/templates/matchup/Showcase.tsx`). This is the stakeholder preview; it does not use `HtmlCanvas`.
+4. Register the lazy Showcase in [`src/templates/showcaseRegistry.ts`](../src/templates/showcaseRegistry.ts). Keys **must** match `templateRegistry` — TypeScript fails if a template is missing a Showcase (or a Showcase has no registry entry). The showcase page tabs are built from the registry; do not hard-code graphic names there.
+
+Showcase loaders stay out of `registry.ts` so the `.hgfx.js` bundler does not pull demo chrome into the package artifact.
 
 `gsap` / `@gsap/react` stay **out of** `hydra.config.ts` `shared` (bundled into `.hgfx.js`).
 
@@ -83,6 +89,9 @@ In [`src/index.ts`](../src/index.ts):
 ```bash
 bun run build
 # → dist/dtv-2026.hgfx.js
+
+bun run build:showcase
+# → showcase-dist/ (stakeholder page)
 ```
 
 Preview after install into a host:

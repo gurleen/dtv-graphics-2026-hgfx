@@ -6,9 +6,12 @@ Requires **Bun >= 1.1**.
 
 ## Templates
 
+Registered in [`src/templates/registry.ts`](src/templates/registry.ts). The stakeholder showcase tabs are built from this list — add a `Showcase.tsx` and a matching key in [`src/templates/showcaseRegistry.ts`](src/templates/showcaseRegistry.ts) when you add a template.
+
 | id | route |
 |----|-------|
-| `lower-third` | `/graphics/p/dtv-2026/lower-third` |
+| `matchup` | `/graphics/p/dtv-2026/matchup` |
+| `score-to-break` | `/graphics/p/dtv-2026/score-to-break` |
 | `talent-single` | `/graphics/p/dtv-2026/talent-single` |
 | `talent-double` | `/graphics/p/dtv-2026/talent-double` |
 
@@ -48,10 +51,36 @@ bunx hydra-gfx build --watch --out /path/to/dtv-graphics-2027/data/packages
 After install:
 
 ```
-/graphics/p/dtv-2026/lower-third?preview=1
+/graphics/p/dtv-2026/matchup?preview=1
+/graphics/p/dtv-2026/score-to-break?preview=1
 /graphics/p/dtv-2026/talent-single?preview=1
 /graphics/p/dtv-2026/talent-double?preview=1
 ```
+
+## Showcase (stakeholder approval)
+
+Tabbed previews of every registered graphic. Local:
+
+```bash
+bun run demo
+# Developer scroll page:  http://127.0.0.1:3456/
+# Stakeholder showcase:   http://127.0.0.1:3456/showcase
+```
+
+Share a specific graphic with the hash, e.g. `/showcase#matchup`.
+
+### Publish to Cloudflare Pages
+
+```bash
+bun run build:showcase
+# → showcase-dist/
+
+# First time only: create the Pages project, then deploy
+bunx wrangler pages project create dtv-2026-graphics-showcase
+bun run deploy:showcase
+```
+
+Git-connected Pages: build command `bun run build:showcase`, output directory `showcase-dist`. The published site is the showcase at the domain root; share a graphic with `/#matchup` (or `/showcase#matchup` when running locally).
 
 ## Porting graphics
 

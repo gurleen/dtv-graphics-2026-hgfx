@@ -6,7 +6,10 @@
   "scripts": {
     "build": "hydra-gfx build --out dist",
     "watch": "hydra-gfx build --watch --out dist",
-    "demo": "bun --hot ./demos/server.ts"
+    "demo": "bun --hot ./demos/server.ts",
+    "showcase": "bun --hot ./demos/server.ts",
+    "build:showcase": "bun build ./demos/showcase/index.html --outdir=./showcase-dist --minify",
+    "deploy:showcase": "bun run build:showcase && bunx wrangler pages deploy showcase-dist --project-name=dtv-2026-graphics-showcase"
   },
   "engines": {
     "bun": ">=1.1.0"
