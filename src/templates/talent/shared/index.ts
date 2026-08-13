@@ -11,3 +11,4 @@ export {
 export { TalentPanel } from './TalentPanel'
 export { TopBox } from './TopBox'
 export { TalentName } from './TalentName'
+export { ShapeSheen, SHELL, SHELL_CONTENT } from './ShapeSheen'

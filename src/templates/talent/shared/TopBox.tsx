@@ -6,7 +6,9 @@ import {
   TOP_BOX_HEIGHT,
   TOP_BOX_LOGO_WIDTH,
   TOP_BOX_WIDTH,
+  TALENT_LIGHT_SHADOW,
 } from './constants'
+import { SHELL, SHELL_CONTENT, ShapeSheen } from './ShapeSheen'
 
 type TopBoxProps = {
   eyebrow: string
@@ -20,38 +22,43 @@ type TopBoxProps = {
  */
 export function TopBox({ eyebrow, logoUrl }: TopBoxProps) {
   const src = logoUrl?.trim() ? logoUrl.trim() : CAA_WHITE_LOGO
+  const eyebrowText = eyebrow.trim().toUpperCase()
 
   return (
     <div style={{ overflow: 'hidden' }}>
-      <div id="top-box">
-        <Row
-          width={TOP_BOX_WIDTH}
-          height={TOP_BOX_HEIGHT}
-          justify="center"
-          align="center"
-          gap={8}
-          background={TOP_BOX_FILL}
-          paddingY={8}
-        >
-          <Image
-            src={src}
-            width={TOP_BOX_LOGO_WIDTH}
-            height={TOP_BOX_HEIGHT - 16}
-            fit="contain"
-            alt=""
-          />
-          {eyebrow.trim().length > 0 ? (
-            <Text
-              fontSize={36}
-              fontFamily={TALENT_FONT}
-              color="#FFFFFF"
-              singleLine
-              marginTop={4}
-            >
-              {eyebrow}
-            </Text>
-          ) : null}
-        </Row>
+      <div id="top-box" style={{ ...SHELL, background: TOP_BOX_FILL }}>
+        <ShapeSheen variant="dark" />
+        <div style={SHELL_CONTENT}>
+          <Row
+            width={TOP_BOX_WIDTH}
+            height={TOP_BOX_HEIGHT}
+            justify="center"
+            align="center"
+            gap={8}
+            paddingY={8}
+          >
+            <Image
+              src={src}
+              width={TOP_BOX_LOGO_WIDTH}
+              height={TOP_BOX_HEIGHT - 16}
+              fit="contain"
+              alt=""
+            />
+            {eyebrowText.length > 0 ? (
+              <div style={{ textShadow: TALENT_LIGHT_SHADOW }}>
+                <Text
+                  fontSize={36}
+                  fontFamily={TALENT_FONT}
+                  color="#FFFFFF"
+                  singleLine
+                  marginTop={4}
+                >
+                  {eyebrowText}
+                </Text>
+              </div>
+            ) : null}
+          </Row>
+        </div>
       </div>
     </div>
   )

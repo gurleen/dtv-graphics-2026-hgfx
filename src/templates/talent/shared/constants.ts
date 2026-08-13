@@ -5,6 +5,11 @@ export const PANEL_INK = '#131313'
 export const PANEL_FOOTER = '#000000'
 export const TOP_BOX_FILL = '#131313'
 
+/** Dark ink on light talent panels. */
+export const TALENT_INK_SHADOW = '0 1px 4px rgba(0,0,0,0.35)'
+/** White type on dark talent chrome. */
+export const TALENT_LIGHT_SHADOW = '0 1px 6px rgba(0,0,0,0.55)'
+
 export const SINGLE_PANEL_WIDTH = 400
 export const SINGLE_PANEL_HEIGHT = 100
 

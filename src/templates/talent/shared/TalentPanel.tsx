@@ -1,6 +1,7 @@
 import type { ReactNode } from 'react'
-import { Column, Rect } from '@hydra-tv/hydra-gfx-runtime'
+import { Column } from '@hydra-tv/hydra-gfx-runtime'
 import { PANEL_FILL, PANEL_FOOTER } from './constants'
+import { SHELL, SHELL_CONTENT, ShapeSheen } from './ShapeSheen'
 
 type TalentPanelProps = {
   width: number
@@ -10,8 +11,10 @@ type TalentPanelProps = {
   id?: string
 }
 
+const FOOTER_HEIGHT = 14
+
 /**
- * Gray talent lower-third shell: top hairline, content, black footer bar.
+ * Gray talent lower-third shell: light content plate, dark footer bar.
  */
 export function TalentPanel({
   width,
@@ -19,19 +22,21 @@ export function TalentPanel({
   children,
   id = 'text-box',
 }: TalentPanelProps) {
+  const contentHeight = height - FOOTER_HEIGHT
+
   return (
-    <div id={id}>
-      <Column
-        width={width}
-        height={height}
-        justify="between"
-        align="stretch"
-        background={PANEL_FILL}
-      >
-        <Rect fill="transparent" width={width} height={5} />
-        {children}
-        <Rect fill={PANEL_FOOTER} width={width} height={14} />
-      </Column>
+    <div style={{ overflow: 'hidden', width, height }}>
+      <div id={id} style={{ width, height }}>
+        <Column width={width} height={height} justify="start" align="stretch">
+          <div style={{ ...SHELL, width, height: contentHeight, background: PANEL_FILL }}>
+            <ShapeSheen variant="light" />
+            <div style={{ ...SHELL_CONTENT, paddingTop: 5 }}>{children}</div>
+          </div>
+          <div style={{ ...SHELL, width, height: FOOTER_HEIGHT, background: PANEL_FOOTER }}>
+            <ShapeSheen variant="dark" />
+          </div>
+        </Column>
+      </div>
     </div>
   )
 }

@@ -1,5 +1,5 @@
 import { Column, Row, Text } from '@hydra-tv/hydra-gfx-runtime'
-import { PANEL_INK, TALENT_FONT } from './constants'
+import { PANEL_INK, TALENT_FONT, TALENT_INK_SHADOW } from './constants'
 
 type TalentNameProps = {
   firstName: string
@@ -24,34 +24,40 @@ export function TalentName({
 }: TalentNameProps) {
   const firstId = `${idPrefix}first-name`
   const lastId = `${idPrefix}last-name`
+  const firstText = firstName.toUpperCase()
+  const lastText = lastName.toUpperCase()
 
   const first = (
-    <div id={firstId}>
-      <Text
-        fontSize={firstFontSize}
-        fontFamily={TALENT_FONT}
-        color={PANEL_INK}
-        textAlign={textAlign}
-        lineHeight={1.05}
-        singleLine
-      >
-        {firstName}
-      </Text>
+    <div style={{ overflow: 'hidden' }}>
+      <div id={firstId} style={{ textShadow: TALENT_INK_SHADOW }}>
+        <Text
+          fontSize={firstFontSize}
+          fontFamily={TALENT_FONT}
+          color={PANEL_INK}
+          textAlign={textAlign}
+          lineHeight={1.05}
+          singleLine
+        >
+          {firstText}
+        </Text>
+      </div>
     </div>
   )
 
   const last = (
-    <div id={lastId} style={{ fontWeight: 700 }}>
-      <Text
-        fontSize={lastFontSize}
-        fontFamily={TALENT_FONT}
-        color={PANEL_INK}
-        textAlign={textAlign}
-        lineHeight={1.05}
-        singleLine
-      >
-        {lastName}
-      </Text>
+    <div style={{ overflow: 'hidden' }}>
+      <div id={lastId} style={{ fontWeight: 800, textShadow: TALENT_INK_SHADOW }}>
+        <Text
+          fontSize={lastFontSize}
+          fontFamily={TALENT_FONT}
+          color={PANEL_INK}
+          textAlign={textAlign}
+          lineHeight={1.05}
+          singleLine
+        >
+          {lastText}
+        </Text>
+      </div>
     </div>
   )
 

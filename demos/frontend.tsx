@@ -16,6 +16,13 @@ import {
   STB_LOGO_SCALE,
   ScoreToBreakLayout,
 } from '../src/templates/score-to-break/Layout'
+import { talentSingleAnimation } from '../src/templates/talent/single/animation'
+import { TalentSingleLayout } from '../src/templates/talent/single/Layout'
+import { talentSingleDefaults } from '../src/templates/talent/single/schema'
+import { talentDoubleAnimation } from '../src/templates/talent/double/animation'
+import { TalentDoubleLayout } from '../src/templates/talent/double/Layout'
+import { talentDoubleDefaults } from '../src/templates/talent/double/schema'
+import { TALENT_FONT } from '../src/templates/talent/shared'
 
 const DELAWARE_TEAM_ID = 48
 const MATCHUP_PREVIEW_SCALE = 0.55
@@ -24,6 +31,11 @@ const MATCHUP_HEIGHT = 72 + 189 + 61
 const MATCHUP_HEADROOM = 140
 const STB_WIDTH = 437
 const STB_HEIGHT = 168 + 168 + 37
+const TALENT_SINGLE_WIDTH = 400
+const TALENT_SINGLE_HEIGHT = 100
+const TALENT_DOUBLE_WIDTH = 726
+const TALENT_DOUBLE_HEIGHT = 44 + 149
+const TALENT_PREVIEW_HEADROOM = 80
 
 function ScaleSlider({
   label,
@@ -214,6 +226,126 @@ function ScoreToBreakPreview({
   )
 }
 
+function TalentSinglePreview() {
+  const [onScreen, setOnScreen] = useState(false)
+  const scope = useGsapPlayout(onScreen, talentSingleAnimation)
+
+  return (
+    <div>
+      <div style={{ display: 'flex', gap: 8, marginBottom: 16 }}>
+        <button
+          type="button"
+          onClick={() => setOnScreen(true)}
+          style={{
+            ...PLAYOUT_BTN,
+            color: onScreen ? '#111' : '#f5f5f5',
+            background: onScreen ? '#7dce82' : '#333',
+          }}
+        >
+          IN
+        </button>
+        <button
+          type="button"
+          onClick={() => setOnScreen(false)}
+          style={{
+            ...PLAYOUT_BTN,
+            color: !onScreen ? '#111' : '#f5f5f5',
+            background: !onScreen ? '#e07070' : '#333',
+          }}
+        >
+          OUT
+        </button>
+      </div>
+      <div
+        style={{
+          width: TALENT_SINGLE_WIDTH,
+          height: TALENT_SINGLE_HEIGHT + TALENT_PREVIEW_HEADROOM,
+          overflow: 'hidden',
+          background: '#000',
+          display: 'flex',
+          alignItems: 'flex-end',
+          justifyContent: 'center',
+        }}
+      >
+        <div
+          ref={scope}
+          style={{
+            width: TALENT_SINGLE_WIDTH,
+            fontFamily: TALENT_FONT,
+          }}
+        >
+          <TalentSingleLayout
+            firstName={talentSingleDefaults.firstName}
+            lastName={talentSingleDefaults.lastName}
+          />
+        </div>
+      </div>
+    </div>
+  )
+}
+
+function TalentDoublePreview() {
+  const [onScreen, setOnScreen] = useState(false)
+  const scope = useGsapPlayout(onScreen, talentDoubleAnimation)
+
+  return (
+    <div>
+      <div style={{ display: 'flex', gap: 8, marginBottom: 16 }}>
+        <button
+          type="button"
+          onClick={() => setOnScreen(true)}
+          style={{
+            ...PLAYOUT_BTN,
+            color: onScreen ? '#111' : '#f5f5f5',
+            background: onScreen ? '#7dce82' : '#333',
+          }}
+        >
+          IN
+        </button>
+        <button
+          type="button"
+          onClick={() => setOnScreen(false)}
+          style={{
+            ...PLAYOUT_BTN,
+            color: !onScreen ? '#111' : '#f5f5f5',
+            background: !onScreen ? '#e07070' : '#333',
+          }}
+        >
+          OUT
+        </button>
+      </div>
+      <div
+        style={{
+          width: TALENT_DOUBLE_WIDTH,
+          height: TALENT_DOUBLE_HEIGHT + TALENT_PREVIEW_HEADROOM,
+          overflow: 'hidden',
+          background: '#000',
+          display: 'flex',
+          alignItems: 'flex-end',
+          justifyContent: 'center',
+        }}
+      >
+        <div
+          ref={scope}
+          style={{
+            width: TALENT_DOUBLE_WIDTH,
+            fontFamily: TALENT_FONT,
+          }}
+        >
+          <TalentDoubleLayout
+            firstNameLeft={talentDoubleDefaults.firstNameLeft}
+            lastNameLeft={talentDoubleDefaults.lastNameLeft}
+            firstNameRight={talentDoubleDefaults.firstNameRight}
+            lastNameRight={talentDoubleDefaults.lastNameRight}
+            eyebrow={talentDoubleDefaults.eyebrow}
+            logoUrl={talentDoubleDefaults.logoUrl}
+          />
+        </div>
+      </div>
+    </div>
+  )
+}
+
 function Demo() {
   const [matchupHomeScale, setMatchupHomeScale] = useState(MATCHUP_LOGO_SCALE)
   const [matchupAwayScale, setMatchupAwayScale] = useState(MATCHUP_LOGO_SCALE)
@@ -234,12 +366,13 @@ function Demo() {
       }}
     >
       <h1 style={{ fontSize: 28, fontWeight: 700, margin: '0 0 8px' }}>
-        Matchup intro
+        DTV 2026 graphics
       </h1>
       <p style={{ color: '#9aa0a6', margin: '0 0 40px', maxWidth: 720, lineHeight: 1.5 }}>
         CAA wordmark draws in with a glow, then slams into the conference box.
         Score to break rows slam from the center, then logos and scores slide
-        in. Use IN / OUT to take either graphic.
+        in. Talent panels use clipped plate motion with sheen on every plate.
+        Use IN / OUT to take any graphic.
       </p>
 
       <section style={{ marginBottom: 56 }}>
@@ -262,7 +395,7 @@ function Demo() {
         />
       </section>
 
-      <section>
+      <section style={{ marginBottom: 56 }}>
         <h2 style={{ fontSize: 20, fontWeight: 700, margin: '0 0 12px' }}>Score to break</h2>
         <ScaleSlider
           label="homeLogoScale"
@@ -280,6 +413,20 @@ function Demo() {
           homeLogoScale={stbHomeScale}
           awayLogoScale={stbAwayScale}
         />
+      </section>
+
+      <section style={{ marginBottom: 56 }}>
+        <h2 style={{ fontSize: 20, fontWeight: 700, margin: '0 0 12px' }}>
+          Talent lower third (single)
+        </h2>
+        <TalentSinglePreview />
+      </section>
+
+      <section>
+        <h2 style={{ fontSize: 20, fontWeight: 700, margin: '0 0 12px' }}>
+          Talent lower third (double)
+        </h2>
+        <TalentDoublePreview />
       </section>
     </div>
   )

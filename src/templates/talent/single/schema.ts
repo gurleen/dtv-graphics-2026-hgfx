@@ -26,5 +26,5 @@ export const talentSingleTemplateSchema: TemplateSchema<TalentSingleProps> = {
     firstName: { label: 'First name', section: 'CONTENT' },
     lastName: { label: 'Last name', section: 'CONTENT' },
   },
-  transition: { inMs: 500, outMs: 300 },
+  transition: { inMs: 1800, outMs: 500 },
 }

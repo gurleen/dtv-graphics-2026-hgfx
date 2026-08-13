@@ -128,6 +128,8 @@ drop-shadow(0 0 40px rgba(255,255,255,0.5))
 
 Park rest poses with `gsap.set` before the timeline plays so a post-outro `seek(0)` does not flash the oversized glowing mark.
 
+**Secondary panels** (talent CAA banner, eyebrow chrome, etc.) slide **up from behind** the primary plate — not down from above. Park the secondary plate at `yPercent: 100` inside an overflow clip, stack the primary plate in front (`z-index: 1`), and animate the secondary to `yPercent: 0` after the primary has landed. Reference: `src/templates/talent/double/Layout.tsx` + `animation.ts`.
+
 Matchup `transition`: `{ inMs: 4200, outMs: 500 }` — keep schema `inMs` / `outMs` honest to the timeline.
 
 ## Layout architecture (copy this)

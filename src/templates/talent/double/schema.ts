@@ -42,5 +42,5 @@ export const talentDoubleTemplateSchema: TemplateSchema<TalentDoubleProps> = {
     eyebrow: { label: 'Eyebrow', section: 'BRAND' },
     logoUrl: { label: 'Logo URL override', section: 'BRAND' },
   },
-  transition: { inMs: 500, outMs: 300 },
+  transition: { inMs: 1800, outMs: 500 },
 }
