@@ -17,8 +17,8 @@ export type ScoreToBreakProps = {
 export const scoreToBreakDefaults: ScoreToBreakProps = {
   homeTeamId: DREXEL_TEAM_ID,
   awayTeamId: 0,
-  homeLogoScale: 2.5,
-  awayLogoScale: 2.5,
+  homeLogoScale: 1.8,
+  awayLogoScale: 1.8,
   homeScore: 0,
   awayScore: 0,
   period: '1ST QUARTER',
@@ -66,7 +66,7 @@ export const scoreToBreakTemplateSchema: TemplateSchema<ScoreToBreakProps> = {
     period: { label: 'Period', section: 'SCORE' },
     sponsorLogoUrl: { label: 'Sponsor logo URL override', section: 'BRAND' },
   },
-  transition: { inMs: 1000, outMs: 500 },
+  transition: { inMs: 2200, outMs: 500 },
   live: {
     bind: {
       homeTeamId: 'config.homeTeamId',

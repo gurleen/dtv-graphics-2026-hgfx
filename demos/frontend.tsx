@@ -10,6 +10,7 @@ import {
   MatchupLayout,
 } from '../src/templates/matchup/Layout'
 import { matchupDefaults } from '../src/templates/matchup/schema'
+import { scoreToBreakAnimation } from '../src/templates/score-to-break/animation'
 import {
   STB_FONT,
   STB_LOGO_SCALE,
@@ -21,6 +22,8 @@ const MATCHUP_PREVIEW_SCALE = 0.55
 const MATCHUP_WIDTH = 1920
 const MATCHUP_HEIGHT = 72 + 189 + 61
 const MATCHUP_HEADROOM = 140
+const STB_WIDTH = 437
+const STB_HEIGHT = 168 + 168 + 37
 
 function ScaleSlider({
   label,
@@ -136,6 +139,81 @@ function MatchupPreview({
   )
 }
 
+function ScoreToBreakPreview({
+  homeTeam,
+  awayTeam,
+  homeLogoScale,
+  awayLogoScale,
+}: {
+  homeTeam: TeamInfo | undefined
+  awayTeam: TeamInfo | undefined
+  homeLogoScale: number
+  awayLogoScale: number
+}) {
+  const [onScreen, setOnScreen] = useState(false)
+  const scope = useGsapPlayout(onScreen, scoreToBreakAnimation, [
+    homeLogoScale,
+    awayLogoScale,
+  ])
+
+  return (
+    <div>
+      <div style={{ display: 'flex', gap: 8, marginBottom: 16 }}>
+        <button
+          type="button"
+          onClick={() => setOnScreen(true)}
+          style={{
+            ...PLAYOUT_BTN,
+            color: onScreen ? '#111' : '#f5f5f5',
+            background: onScreen ? '#7dce82' : '#333',
+          }}
+        >
+          IN
+        </button>
+        <button
+          type="button"
+          onClick={() => setOnScreen(false)}
+          style={{
+            ...PLAYOUT_BTN,
+            color: !onScreen ? '#111' : '#f5f5f5',
+            background: !onScreen ? '#e07070' : '#333',
+          }}
+        >
+          OUT
+        </button>
+      </div>
+      <div
+        style={{
+          width: STB_WIDTH,
+          height: STB_HEIGHT,
+          overflow: 'hidden',
+          background: '#000',
+        }}
+      >
+        <div
+          ref={scope}
+          style={{
+            width: STB_WIDTH,
+            height: STB_HEIGHT,
+            fontFamily: STB_FONT,
+          }}
+        >
+          <ScoreToBreakLayout
+            homeTeam={homeTeam}
+            awayTeam={awayTeam}
+            homeScore={72}
+            awayScore={68}
+            period="1ST QUARTER"
+            sponsorLogoUrl={DEFAULT_SPONSOR_LOGO}
+            homeLogoScale={homeLogoScale}
+            awayLogoScale={awayLogoScale}
+          />
+        </div>
+      </div>
+    </div>
+  )
+}
+
 function Demo() {
   const [matchupHomeScale, setMatchupHomeScale] = useState(MATCHUP_LOGO_SCALE)
   const [matchupAwayScale, setMatchupAwayScale] = useState(MATCHUP_LOGO_SCALE)
@@ -160,8 +238,8 @@ function Demo() {
       </h1>
       <p style={{ color: '#9aa0a6', margin: '0 0 40px', maxWidth: 720, lineHeight: 1.5 }}>
         CAA wordmark draws in with a glow, then slams into the conference box.
-        Use IN / OUT to take the graphic. Logo-scale sliders still widen the team
-        clip boxes. Score to break is a static layout preview.
+        Score to break rows slam from the center, then logos and scores slide
+        in. Use IN / OUT to take either graphic.
       </p>
 
       <section style={{ marginBottom: 56 }}>
@@ -196,18 +274,12 @@ function Demo() {
           value={stbAwayScale}
           onChange={setStbAwayScale}
         />
-        <div style={{ fontFamily: STB_FONT }}>
-          <ScoreToBreakLayout
-            homeTeam={homeTeam}
-            awayTeam={awayTeam}
-            homeScore={72}
-            awayScore={68}
-            period="1ST QUARTER"
-            sponsorLogoUrl={DEFAULT_SPONSOR_LOGO}
-            homeLogoScale={stbHomeScale}
-            awayLogoScale={stbAwayScale}
-          />
-        </div>
+        <ScoreToBreakPreview
+          homeTeam={homeTeam}
+          awayTeam={awayTeam}
+          homeLogoScale={stbHomeScale}
+          awayLogoScale={stbAwayScale}
+        />
       </section>
     </div>
   )
