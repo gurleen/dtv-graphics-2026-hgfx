@@ -10,6 +10,8 @@ export const MATCHUP_LOGO_BASE_WIDTH = 300
 export const MATCHUP_LOGO_HEIGHT = 189
 
 const MATCHUP_TEXT_WIDTH = 260
+/** First line of a school name; wrap at the last space that fits. */
+const SCHOOL_NAME_MAX_CHARS = 12
 const EMPTY_TEAM_FILL = '#141515'
 const TICKER_FONT_SIZE = Math.round(MATCHUP_LOGO_HEIGHT * 0.95)
 const TICKER_REPEAT = 8
@@ -78,6 +80,14 @@ function venueLine(venue: string, location: string): string {
 function teamFill(color: string | undefined): string {
   if (!color) return EMPTY_TEAM_FILL
   return color.startsWith('#') ? color : `#${color}`
+}
+
+function wrapSchoolName(name: string, maxChars = SCHOOL_NAME_MAX_CHARS): string[] {
+  if (name.length <= maxChars) return [name]
+  const breakAt = name.lastIndexOf(' ', maxChars)
+  if (breakAt <= 0) return [name]
+  const rest = name.slice(breakAt + 1)
+  return rest ? [name.slice(0, breakAt), rest] : [name]
 }
 
 const SHEEN_DARK: CSSProperties = {
@@ -305,6 +315,7 @@ function TeamBox({
   const school = team?.short_name.toUpperCase() ?? ''
   const mascot = team?.mascot.toUpperCase() ?? ''
   const clipWidth = logoBoxWidth(logoScale)
+  const schoolLines = school ? wrapSchoolName(school) : [' ']
 
   return (
     <div
@@ -351,16 +362,19 @@ function TeamBox({
                 textShadow: TEAM_FOREGROUND_SHADOW.textShadow,
               }}
             >
-              <Text
-                color="#FFFFFF"
-                fontSize={72}
-                fontFamily={MATCHUP_FONT}
-                textAlign={isHome ? 'left' : 'right'}
-                lineHeight={1.05}
-                singleLine
-              >
-                {school || ' '}
-              </Text>
+              {schoolLines.map((line) => (
+                <Text
+                  key={line}
+                  color="#FFFFFF"
+                  fontSize={72}
+                  fontFamily={MATCHUP_FONT}
+                  textAlign={isHome ? 'left' : 'right'}
+                  lineHeight={1}
+                  singleLine
+                >
+                  {line}
+                </Text>
+              ))}
             </div>
           </Column>
         </Flex>
