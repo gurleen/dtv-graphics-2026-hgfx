@@ -1,3 +1,4 @@
+import type { CSSProperties } from 'react'
 import { Rect, Row, Column, Flex, Text, Image } from '@hydra-tv/hydra-gfx-runtime'
 import { CroppedImage } from '../../components/CroppedImage'
 import { getTeamKnockoutLogo, type TeamInfo } from '../../data/teams'
@@ -49,6 +50,35 @@ function teamFill(color: string | undefined): string {
   return color.startsWith('#') ? color : `#${color}`
 }
 
+const SHEEN_DARK: CSSProperties = {
+  position: 'absolute',
+  inset: 0,
+  pointerEvents: 'none',
+  zIndex: 0,
+  background:
+    'linear-gradient(180deg, rgba(255,255,255,0.14) 0%, rgba(255,255,255,0.04) 28%, rgba(0,0,0,0) 52%, rgba(0,0,0,0.22) 100%)',
+  boxShadow:
+    'inset 0 1px 0 rgba(255,255,255,0.22), inset 0 -2px 4px rgba(0,0,0,0.28)',
+}
+
+const SHEEN_LIGHT: CSSProperties = {
+  position: 'absolute',
+  inset: 0,
+  pointerEvents: 'none',
+  zIndex: 0,
+  background:
+    'linear-gradient(180deg, rgba(0,0,0,0.10) 0%, rgba(0,0,0,0.02) 32%, rgba(20,40,60,0.06) 100%)',
+  boxShadow:
+    'inset 0 1px 0 rgba(0,0,0,0.12), inset 0 -1px 0 rgba(255,255,255,0.35)',
+}
+
+function ShapeSheen({ variant }: { variant: 'dark' | 'light' }) {
+  return <div aria-hidden style={variant === 'light' ? SHEEN_LIGHT : SHEEN_DARK} />
+}
+
+const SHELL: CSSProperties = { position: 'relative' }
+const SHELL_CONTENT: CSSProperties = { position: 'relative', zIndex: 1 }
+
 export function MatchupLayout({
   presenter,
   sponsorLogoUrl,
@@ -90,23 +120,25 @@ function SponsorBar({
   sponsorLogoUrl: string
 }) {
   return (
-    <div id="sponsor-bar">
-      <Row
-        width={1920}
-        height={72}
-        justify="center"
-        align="center"
-        gap={20}
-        padding={28}
-        background="#141414"
-      >
-        <Text color="#FFFFFF" fontSize={48} fontFamily={MATCHUP_FONT} lineHeight={1.05} singleLine>
-          {presenter}
-        </Text>
-        {sponsorLogoUrl ? (
-          <Image src={sponsorLogoUrl} width={400} height={48} fit="contain" alt="" />
-        ) : null}
-      </Row>
+    <div id="sponsor-bar" style={{ ...SHELL, background: '#141414' }}>
+      <ShapeSheen variant="dark" />
+      <div style={SHELL_CONTENT}>
+        <Row
+          width={1920}
+          height={72}
+          justify="center"
+          align="center"
+          gap={20}
+          padding={28}
+        >
+          <Text color="#FFFFFF" fontSize={48} fontFamily={MATCHUP_FONT} lineHeight={1.05} singleLine>
+            {presenter}
+          </Text>
+          {sponsorLogoUrl ? (
+            <Image src={sponsorLogoUrl} width={400} height={48} fit="contain" alt="" />
+          ) : null}
+        </Row>
+      </div>
     </div>
   )
 }
@@ -114,23 +146,19 @@ function SponsorBar({
 function ConfBox({ confLogoUrl, width }: { confLogoUrl: string; width: number }) {
   const logoWidth = Math.max(width - 40, 80)
   return (
-    <div id="caa-box">
-      <Row
-        width={width}
-        height={189}
-        justify="center"
-        align="center"
-        padding={20}
-        background="#141515"
-      >
-        <div id="caa-logo">
-          {confLogoUrl ? (
-            <Image src={confLogoUrl} width={logoWidth} height={140} fit="contain" alt="" />
-          ) : (
-            <Rect fill="transparent" width={logoWidth} height={140} />
-          )}
-        </div>
-      </Row>
+    <div id="caa-box" style={{ ...SHELL, background: '#141515' }}>
+      <ShapeSheen variant="dark" />
+      <div style={SHELL_CONTENT}>
+        <Row width={width} height={189} justify="center" align="center" padding={20}>
+          <div id="caa-logo">
+            {confLogoUrl ? (
+              <Image src={confLogoUrl} width={logoWidth} height={140} fit="contain" alt="" />
+            ) : (
+              <Rect fill="transparent" width={logoWidth} height={140} />
+            )}
+          </div>
+        </Row>
+      </div>
     </div>
   )
 }
@@ -151,81 +179,83 @@ function TeamBox({
   const clipWidth = logoBoxWidth(logoScale)
 
   return (
-    <div id={`${idPrefix}-box`}>
-      <Flex
-        width={teamBoxWidth(logoScale)}
-        height={189}
-        direction={isHome ? 'row-reverse' : 'row'}
-        align="stretch"
-        background={teamFill(team?.color)}
-      >
-        <div id={`${idPrefix}-logo`}>
-          {logoUrl ? (
-            <CroppedImage
-              src={logoUrl}
-              width={clipWidth}
-              height={MATCHUP_LOGO_HEIGHT}
-              contentWidth={MATCHUP_LOGO_BASE_WIDTH}
-              contentHeight={MATCHUP_LOGO_HEIGHT}
-              fit="cover"
-              scale={logoScale}
-              alt=""
-            />
-          ) : (
-            <Row width={clipWidth} height={MATCHUP_LOGO_HEIGHT} />
-          )}
-        </div>
-        <Column
-          width={MATCHUP_TEXT_WIDTH}
+    <div
+      id={`${idPrefix}-box`}
+      style={{ ...SHELL, background: teamFill(team?.color) }}
+    >
+      <ShapeSheen variant="dark" />
+      <div style={SHELL_CONTENT}>
+        <Flex
+          width={teamBoxWidth(logoScale)}
           height={189}
-          justify="center"
-          align={isHome ? 'start' : 'end'}
-          paddingX={20}
+          direction={isHome ? 'row-reverse' : 'row'}
+          align="stretch"
         >
-          <div id={`${idPrefix}-school-name`}>
-            <Text
-              color="#FFFFFF"
-              fontSize={60}
-              fontFamily={MATCHUP_FONT}
-              textAlign={isHome ? 'left' : 'right'}
-              lineHeight={1.05}
-              singleLine
-            >
-              {school || ' '}
-            </Text>
+          <div id={`${idPrefix}-logo`}>
+            {logoUrl ? (
+              <CroppedImage
+                src={logoUrl}
+                width={clipWidth}
+                height={MATCHUP_LOGO_HEIGHT}
+                contentWidth={MATCHUP_LOGO_BASE_WIDTH}
+                contentHeight={MATCHUP_LOGO_HEIGHT}
+                fit="cover"
+                scale={logoScale}
+                alt=""
+              />
+            ) : (
+              <Row width={clipWidth} height={MATCHUP_LOGO_HEIGHT} />
+            )}
           </div>
-          <div id={`${idPrefix}-team-name`}>
-            <Text
-              color="#FFFFFF"
-              fontSize={72}
-              fontFamily={MATCHUP_FONT}
-              textAlign={isHome ? 'left' : 'right'}
-              lineHeight={1.05}
-              singleLine
-            >
-              {mascot || ' '}
-            </Text>
-          </div>
-        </Column>
-      </Flex>
+          <Column
+            width={MATCHUP_TEXT_WIDTH}
+            height={189}
+            justify="center"
+            align={isHome ? 'start' : 'end'}
+            paddingX={20}
+          >
+            <div id={`${idPrefix}-school-name`}>
+              <Text
+                color="#FFFFFF"
+                fontSize={60}
+                fontFamily={MATCHUP_FONT}
+                textAlign={isHome ? 'left' : 'right'}
+                lineHeight={1.05}
+                singleLine
+              >
+                {school || ' '}
+              </Text>
+            </div>
+            <div id={`${idPrefix}-team-name`}>
+              <Text
+                color="#FFFFFF"
+                fontSize={72}
+                fontFamily={MATCHUP_FONT}
+                textAlign={isHome ? 'left' : 'right'}
+                lineHeight={1.05}
+                singleLine
+              >
+                {mascot || ' '}
+              </Text>
+            </div>
+          </Column>
+        </Flex>
+      </div>
     </div>
   )
 }
 
 function BottomBar({ venue, location }: { venue: string; location: string }) {
   return (
-    <div id="bottom-bar">
-      <Row
-        width={1920}
-        height={61}
-        justify="center"
-        align="center"
-        background="#F0F0F0"
-      >
-        <Text color="#000000" fontSize={48} fontFamily={MATCHUP_FONT} lineHeight={1.05} singleLine>
-          {venueLine(venue, location)}
-        </Text>
-      </Row>
+    <div id="bottom-bar" style={{ ...SHELL, background: '#F0F0F0' }}>
+      <ShapeSheen variant="light" />
+      <div style={SHELL_CONTENT}>
+        <Row width={1920} height={61} justify="center" align="center">
+          <Text color="#000000" fontSize={48} fontFamily={MATCHUP_FONT} lineHeight={1.05} singleLine>
+            {venueLine(venue, location)}
+          </Text>
+        </Row>
+      </div>
     </div>
   )
 }
