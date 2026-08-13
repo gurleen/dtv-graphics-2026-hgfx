@@ -2,6 +2,7 @@ import { useState } from 'react'
 import { useGsapPlayout } from '../../../lib/gsap'
 import { TALENT_FONT } from '../shared'
 import { PlayoutSwitch, ShowcaseStage } from '../../shared/ShowcaseChrome'
+import type { ShowcaseProps } from '../../showcaseRegistry'
 import { talentSingleAnimation } from './animation'
 import { TalentSingleLayout } from './Layout'
 import { talentSingleDefaults } from './schema'
@@ -10,7 +11,7 @@ const TALENT_SINGLE_WIDTH = 400
 const TALENT_SINGLE_HEIGHT = 100
 const TALENT_PREVIEW_HEADROOM = 80
 
-export default function TalentSingleShowcase({ autoIn = false }: { autoIn?: boolean }) {
+export default function TalentSingleShowcase({ autoIn = false }: ShowcaseProps) {
   const [onScreen, setOnScreen] = useState(autoIn)
   const { scope, isAnimating } = useGsapPlayout(onScreen, talentSingleAnimation)
 

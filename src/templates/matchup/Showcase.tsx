@@ -22,10 +22,12 @@ const MATCHUP_HEADROOM = 140
 
 export default function MatchupShowcase({
   autoIn = false,
+  awayTeamId = SHOWCASE_AWAY_TEAM_ID,
   homeLogoScale = MATCHUP_LOGO_SCALE,
   awayLogoScale = MATCHUP_LOGO_SCALE,
 }: {
   autoIn?: boolean
+  awayTeamId?: number
   homeLogoScale?: number
   awayLogoScale?: number
 }) {
@@ -36,7 +38,7 @@ export default function MatchupShowcase({
   ])
 
   const homeTeam = findTeam(SHOWCASE_HOME_TEAM_ID)
-  const awayTeam = findTeam(SHOWCASE_AWAY_TEAM_ID)
+  const awayTeam = findTeam(awayTeamId)
 
   return (
     <div>

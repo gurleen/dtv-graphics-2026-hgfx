@@ -2,6 +2,7 @@ import { useState } from 'react'
 import { useGsapPlayout } from '../../../lib/gsap'
 import { TALENT_FONT } from '../shared'
 import { PlayoutSwitch, ShowcaseStage } from '../../shared/ShowcaseChrome'
+import type { ShowcaseProps } from '../../showcaseRegistry'
 import { talentDoubleAnimation } from './animation'
 import { TalentDoubleLayout } from './Layout'
 import { talentDoubleDefaults } from './schema'
@@ -10,7 +11,7 @@ const TALENT_DOUBLE_WIDTH = 726
 const TALENT_DOUBLE_HEIGHT = 44 + 149
 const TALENT_PREVIEW_HEADROOM = 80
 
-export default function TalentDoubleShowcase({ autoIn = false }: { autoIn?: boolean }) {
+export default function TalentDoubleShowcase({ autoIn = false }: ShowcaseProps) {
   const [onScreen, setOnScreen] = useState(autoIn)
   const { scope, isAnimating } = useGsapPlayout(onScreen, talentDoubleAnimation)
 

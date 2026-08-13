@@ -3,6 +3,7 @@ import type { TemplateId } from './registry'
 
 export type ShowcaseProps = {
   autoIn?: boolean
+  awayTeamId?: number
 }
 
 type ShowcaseLoader = () => Promise<{ default: ComponentType<ShowcaseProps> }>

@@ -15,10 +15,12 @@ const STB_HEIGHT = 168 + 168 + 37
 
 export default function ScoreToBreakShowcase({
   autoIn = false,
+  awayTeamId = SHOWCASE_AWAY_TEAM_ID,
   homeLogoScale = STB_LOGO_SCALE,
   awayLogoScale = STB_LOGO_SCALE,
 }: {
   autoIn?: boolean
+  awayTeamId?: number
   homeLogoScale?: number
   awayLogoScale?: number
 }) {
@@ -30,7 +32,7 @@ export default function ScoreToBreakShowcase({
   )
 
   const homeTeam = findTeam(SHOWCASE_HOME_TEAM_ID)
-  const awayTeam = findTeam(SHOWCASE_AWAY_TEAM_ID)
+  const awayTeam = findTeam(awayTeamId)
 
   return (
     <div>
