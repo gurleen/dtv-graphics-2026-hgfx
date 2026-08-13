@@ -1,48 +1,53 @@
-import gsap from 'gsap'
 import '../../lib/gsap'
 import type { AnimationFunc } from '../../lib/gsap'
 
 const CAA_GLOW =
-  'drop-shadow(0 0 8px #fff) drop-shadow(0 0 22px rgba(255,255,255,0.9)) drop-shadow(0 0 40px rgba(255,255,255,0.5))'
+  'drop-shadow(0 0 6px #fff) drop-shadow(0 0 16px rgba(255,255,255,0.75)) drop-shadow(0 0 32px rgba(255,255,255,0.38))'
 const CAA_GLOW_OFF =
   'drop-shadow(0 0 0px #fff) drop-shadow(0 0 0px rgba(255,255,255,0)) drop-shadow(0 0 0px rgba(255,255,255,0))'
 
 export const matchupAnimation: AnimationFunc = (timeline, root) => {
   const paths = root.querySelectorAll('#caa-logo path')
 
-  gsap.set('#caa-box', { autoAlpha: 0 })
-  gsap.set('#caa-ripple', {
-    xPercent: -50,
-    yPercent: -50,
-    scale: 0.2,
-    autoAlpha: 0,
-    transformOrigin: '50% 50%',
-  })
-  gsap.set('#caa-logo', {
-    scale: 1.75,
-    y: -24,
-    transformOrigin: '50% 50%',
-    filter: CAA_GLOW,
-  })
-  gsap.set(paths, {
-    drawSVG: 0,
-    fillOpacity: 0,
-    stroke: '#FEFEFE',
-    strokeWidth: 10,
-    strokeLinejoin: 'round',
-    strokeLinecap: 'round',
-  })
-  // Parked toward the CAA plate; the overflow wrapper clips them until the slam.
-  gsap.set('#away-box', { xPercent: 100 })
-  gsap.set('#home-box', { xPercent: -100 })
-
+  // Park these on the timeline at t=0 so the post-outro seek(0) restores a
+  // blank frame — not the oversized glowing wordmark (ConfBox is overflow:visible).
   timeline
-    .to(paths, {
-      drawSVG: '100%',
-      duration: 1.15,
-      stagger: { each: 0.14, from: 'end' },
-      ease: 'power2.inOut',
+    .set('#caa-box', { autoAlpha: 0 })
+    .set('#caa-ripple', {
+      xPercent: -50,
+      yPercent: -50,
+      scale: 0.2,
+      autoAlpha: 0,
+      transformOrigin: '50% 50%',
     })
+    .set('#caa-logo', {
+      autoAlpha: 0,
+      scale: 1.75,
+      y: -24,
+      transformOrigin: '50% 50%',
+      filter: CAA_GLOW,
+    })
+    .set(paths, {
+      drawSVG: 0,
+      fillOpacity: 0,
+      stroke: '#FEFEFE',
+      strokeWidth: 10,
+      strokeLinejoin: 'round',
+      strokeLinecap: 'round',
+    })
+    .set('#away-box', { xPercent: 100 })
+    .set('#home-box', { xPercent: -100 })
+    .to('#caa-logo', { autoAlpha: 1, duration: 0.08, ease: 'none' })
+    .to(
+      paths,
+      {
+        drawSVG: '100%',
+        duration: 1.15,
+        stagger: { each: 0.14, from: 'end' },
+        ease: 'power2.inOut',
+      },
+      '<',
+    )
     .to(paths, { fillOpacity: 1, duration: 0.3, ease: 'power1.out' }, '-=0.28')
     .addLabel('slam', '+=0.08')
     .to(
