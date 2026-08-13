@@ -22,8 +22,6 @@ function animation(timeline: gsap.core.Timeline, root: HTMLElement) {
     .from('#away-logo', { xPercent: -100, duration: 2, ease: 'expo.out' }, '<')
     .from('#home-school-name', { y: 75, duration: 2, ease: 'expo.out' }, '<0.1')
     .from('#away-school-name', { y: 75, duration: 2, ease: 'expo.out' }, '<')
-    .from('#home-team-name', { y: 75, duration: 2, ease: 'expo.out' }, '<0.1')
-    .from('#away-team-name', { y: 75, duration: 2, ease: 'expo.out' }, '<')
     .from('#sponsor-bar', { y: 75, duration: 1.5, ease: 'expo.out' }, '<1')
     .from('#bottom-bar', { y: -75, duration: 1.5, ease: 'expo.out' }, '<')
     .addPause()

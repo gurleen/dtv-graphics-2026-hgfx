@@ -10,6 +10,30 @@ export const MATCHUP_LOGO_HEIGHT = 189
 
 const MATCHUP_TEXT_WIDTH = 260
 const EMPTY_TEAM_FILL = '#141515'
+const TICKER_FONT_SIZE = Math.round(MATCHUP_LOGO_HEIGHT * 0.95)
+const TICKER_REPEAT = 8
+const TICKER_CSS = `
+@keyframes matchup-ticker-out-left {
+  from { transform: translateX(0); }
+  to { transform: translateX(-50%); }
+}
+@keyframes matchup-ticker-out-right {
+  from { transform: translateX(-50%); }
+  to { transform: translateX(0); }
+}
+.matchup-ticker {
+  display: flex;
+  width: max-content;
+  height: 100%;
+  align-items: center;
+}
+.matchup-ticker-out-left {
+  animation: matchup-ticker-out-left 18s linear infinite;
+}
+.matchup-ticker-out-right {
+  animation: matchup-ticker-out-right 18s linear infinite;
+}
+`
 
 function logoBoxWidth(logoScale: number): number {
   return Math.round(MATCHUP_LOGO_BASE_WIDTH * logoScale)
@@ -78,6 +102,10 @@ function ShapeSheen({ variant }: { variant: 'dark' | 'light' }) {
 
 const SHELL: CSSProperties = { position: 'relative' }
 const SHELL_CONTENT: CSSProperties = { position: 'relative', zIndex: 1 }
+const TEAM_FOREGROUND_SHADOW: CSSProperties = {
+  textShadow: '0 1px 6px rgba(0,0,0,0.55)',
+  filter: 'drop-shadow(0 1px 4px rgba(0,0,0,0.45))',
+}
 
 export function MatchupLayout({
   presenter,
@@ -92,6 +120,7 @@ export function MatchupLayout({
 }: MatchupLayoutProps) {
   return (
     <Column width={1920} height="auto" align="stretch">
+      <style>{TICKER_CSS}</style>
       <div style={{ overflow: 'hidden' }}>
         <SponsorBar presenter={presenter} sponsorLogoUrl={sponsorLogoUrl} />
       </div>
@@ -163,6 +192,58 @@ function ConfBox({ confLogoUrl, width }: { confLogoUrl: string; width: number })
   )
 }
 
+function TickerCopy({ mascot }: { mascot: string }) {
+  return (
+    <div
+      style={{
+        display: 'flex',
+        flexShrink: 0,
+        alignItems: 'center',
+        whiteSpace: 'nowrap',
+        fontFamily: MATCHUP_FONT,
+        fontWeight: 800,
+        fontSize: TICKER_FONT_SIZE,
+        lineHeight: 1,
+        letterSpacing: '0.08em',
+        color: 'rgba(255,255,255,0.08)',
+      }}
+    >
+      {Array.from({ length: TICKER_REPEAT }, (_, i) => (
+        <span key={i} style={{ paddingRight: '0.6em' }}>
+          {mascot}
+          {' \u2022 '}
+        </span>
+      ))}
+    </div>
+  )
+}
+
+function MascotTicker({ mascot, isHome }: { mascot: string; isHome: boolean }) {
+  return (
+    <div
+      aria-hidden
+      style={{
+        position: 'absolute',
+        inset: 0,
+        overflow: 'hidden',
+        zIndex: 0,
+        pointerEvents: 'none',
+      }}
+    >
+      <div
+        className={
+          isHome
+            ? 'matchup-ticker matchup-ticker-out-right'
+            : 'matchup-ticker matchup-ticker-out-left'
+        }
+      >
+        <TickerCopy mascot={mascot} />
+        <TickerCopy mascot={mascot} />
+      </div>
+    </div>
+  )
+}
+
 function TeamBox({
   isHome,
   team,
@@ -181,8 +262,9 @@ function TeamBox({
   return (
     <div
       id={`${idPrefix}-box`}
-      style={{ ...SHELL, background: teamFill(team?.color) }}
+      style={{ ...SHELL, overflow: 'hidden', background: teamFill(team?.color) }}
     >
+      {mascot ? <MascotTicker mascot={mascot} isHome={isHome} /> : null}
       <ShapeSheen variant="dark" />
       <div style={SHELL_CONTENT}>
         <Flex
@@ -191,7 +273,7 @@ function TeamBox({
           direction={isHome ? 'row-reverse' : 'row'}
           align="stretch"
         >
-          <div id={`${idPrefix}-logo`}>
+          <div id={`${idPrefix}-logo`} style={{ filter: TEAM_FOREGROUND_SHADOW.filter }}>
             {logoUrl ? (
               <CroppedImage
                 src={logoUrl}
@@ -214,19 +296,14 @@ function TeamBox({
             align={isHome ? 'start' : 'end'}
             paddingX={20}
           >
-            <div id={`${idPrefix}-school-name`}>
-              <Text
-                color="#FFFFFF"
-                fontSize={60}
-                fontFamily={MATCHUP_FONT}
-                textAlign={isHome ? 'left' : 'right'}
-                lineHeight={1.05}
-                singleLine
-              >
-                {school || ' '}
-              </Text>
-            </div>
-            <div id={`${idPrefix}-team-name`}>
+            <div
+              id={`${idPrefix}-school-name`}
+              style={{
+                fontWeight: 800,
+                letterSpacing: '0.08em',
+                textShadow: TEAM_FOREGROUND_SHADOW.textShadow,
+              }}
+            >
               <Text
                 color="#FFFFFF"
                 fontSize={72}
@@ -235,7 +312,7 @@ function TeamBox({
                 lineHeight={1.05}
                 singleLine
               >
-                {mascot || ' '}
+                {school || ' '}
               </Text>
             </div>
           </Column>
