@@ -55,7 +55,7 @@ After install:
 
 ## Porting graphics
 
-See [docs/PORTING.md](docs/PORTING.md) for the checklist when bringing templates over from `dtv-graphics-2026` (talent single/double are the reference ports).
+See [docs/PORTING.md](docs/PORTING.md) for the HYDRA / GSAP checklist, and [docs/DESIGN_LANGUAGE.md](docs/DESIGN_LANGUAGE.md) for the look (matchup is the reference).
 
 ## GSAP playout (porting from SPX / dtv-graphics-2026)
 

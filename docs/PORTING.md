@@ -2,7 +2,9 @@
 
 Checklist for agents porting SPX / Bun graphics from the old show package into this HYDRA // GFX template package.
 
-**Reference ports:** [`src/templates/talent/single`](../src/templates/talent/single) and [`src/templates/talent/double`](../src/templates/talent/double).
+**Look:** follow [DESIGN_LANGUAGE.md](DESIGN_LANGUAGE.md) (established on matchup). Talent light panels are the exception.
+
+**Reference ports:** [`src/templates/matchup`](../src/templates/matchup) for team-color / full-width bars; [`src/templates/talent/single`](../src/templates/talent/single) and [`src/templates/talent/double`](../src/templates/talent/double) for name plates.
 
 ## 1. Place files logically (no numbering)
 

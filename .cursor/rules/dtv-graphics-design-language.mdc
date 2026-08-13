@@ -1,0 +1,19 @@
+---
+description: Apply the matchup design language when creating or porting graphics in this package.
+globs: src/templates/**/*.{ts,tsx}
+alwaysApply: false
+---
+
+# Matchup design language
+
+When creating, porting, or restyling a graphic, follow [docs/DESIGN_LANGUAGE.md](../../docs/DESIGN_LANGUAGE.md). Reference: `src/templates/matchup/`.
+
+- **Plates** with hard edges, inset sheen, no rounded corners.
+- **Zuume**, all caps. School names wrap at 12 characters.
+- **Team color fill** + knockout logos (`getTeamKnockoutLogo`), default scale **1.8**.
+- Chrome `#141414` / `#141515`; footer `#F0F0F0`.
+- Motion: clipped `xPercent` / `y`, middle-out energy. Do not squash with `scaleX`.
+- Park full-width bars with `position: absolute` (not `marginTop`).
+- Split `Layout.tsx` / `animation.ts` / `Graphic.tsx`. Outro fades `root`.
+
+Talent light panels (`src/templates/talent/`) keep their inverted palette; still use Zuume and the GSAP take contract.
