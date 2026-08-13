@@ -1,4 +1,4 @@
-import type { CSSProperties } from 'react'
+import { useLayoutEffect, useRef, type CSSProperties } from 'react'
 import { Row, Column, Flex, Text, Image } from '@hydra-tv/hydra-gfx-runtime'
 import { CroppedImage } from '../../components/CroppedImage'
 import { getTeamKnockoutLogo, type TeamInfo } from '../../data/teams'
@@ -176,6 +176,26 @@ function SponsorBar({
   )
 }
 
+function CaaLogo({ width }: { width: number }) {
+  const ref = useRef<HTMLDivElement>(null)
+
+  // Inject once so later React renders (IN/OUT) don't replace the path nodes
+  // DrawSVG is already animating.
+  useLayoutEffect(() => {
+    const el = ref.current
+    if (!el || el.childElementCount > 0) return
+    el.innerHTML = caaWhiteSvg
+  }, [])
+
+  return (
+    <div
+      id="caa-logo"
+      ref={ref}
+      style={{ width, height: 140, overflow: 'visible' }}
+    />
+  )
+}
+
 function ConfBox({ width }: { width: number }) {
   const logoWidth = Math.max(width - 40, 80)
   return (
@@ -212,11 +232,7 @@ function ConfBox({ width }: { width: number }) {
       </div>
       <div style={SHELL_CONTENT}>
         <Row width={width} height={189} justify="center" align="center" padding={20}>
-          <div
-            id="caa-logo"
-            style={{ width: logoWidth, height: 140, overflow: 'visible' }}
-            dangerouslySetInnerHTML={{ __html: caaWhiteSvg }}
-          />
+          <CaaLogo width={logoWidth} />
         </Row>
       </div>
     </div>

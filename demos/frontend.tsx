@@ -49,6 +49,15 @@ function ScaleSlider({
   )
 }
 
+const PLAYOUT_BTN = {
+  padding: '8px 20px',
+  fontWeight: 700,
+  fontSize: 14,
+  border: 'none',
+  borderRadius: 4,
+  cursor: 'pointer',
+} as const
+
 function MatchupPreview({
   homeTeam,
   awayTeam,
@@ -60,32 +69,38 @@ function MatchupPreview({
   homeLogoScale: number
   awayLogoScale: number
 }) {
-  const [take, setTake] = useState(0)
-  const scope = useGsapPlayout(true, matchupAnimation, [
-    take,
+  const [onScreen, setOnScreen] = useState(false)
+  const scope = useGsapPlayout(onScreen, matchupAnimation, [
     homeLogoScale,
     awayLogoScale,
   ])
 
   return (
     <div>
-      <button
-        type="button"
-        onClick={() => setTake((n) => n + 1)}
-        style={{
-          marginBottom: 16,
-          padding: '8px 16px',
-          fontWeight: 700,
-          fontSize: 14,
-          color: '#111',
-          background: '#f5f5f5',
-          border: 'none',
-          borderRadius: 4,
-          cursor: 'pointer',
-        }}
-      >
-        Replay intro
-      </button>
+      <div style={{ display: 'flex', gap: 8, marginBottom: 16 }}>
+        <button
+          type="button"
+          onClick={() => setOnScreen(true)}
+          style={{
+            ...PLAYOUT_BTN,
+            color: onScreen ? '#111' : '#f5f5f5',
+            background: onScreen ? '#7dce82' : '#333',
+          }}
+        >
+          IN
+        </button>
+        <button
+          type="button"
+          onClick={() => setOnScreen(false)}
+          style={{
+            ...PLAYOUT_BTN,
+            color: !onScreen ? '#111' : '#f5f5f5',
+            background: !onScreen ? '#e07070' : '#333',
+          }}
+        >
+          OUT
+        </button>
+      </div>
       <div
         style={{
           width: MATCHUP_WIDTH * MATCHUP_PREVIEW_SCALE,
@@ -145,8 +160,8 @@ function Demo() {
       </h1>
       <p style={{ color: '#9aa0a6', margin: '0 0 40px', maxWidth: 720, lineHeight: 1.5 }}>
         CAA wordmark draws in with a glow, then slams into the conference box.
-        Replay the intro to iterate. Logo-scale sliders still widen the team clip
-        boxes. Score to break is a static layout preview.
+        Use IN / OUT to take the graphic. Logo-scale sliders still widen the team
+        clip boxes. Score to break is a static layout preview.
       </p>
 
       <section style={{ marginBottom: 56 }}>
