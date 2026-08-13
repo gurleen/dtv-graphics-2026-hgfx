@@ -5,7 +5,7 @@ import { getTeamKnockoutLogo, type TeamInfo } from '../../data/teams'
 import caaWhiteSvg from '../talent/shared/assets/caa-white.svg' with { type: 'text' }
 
 export const MATCHUP_FONT = 'Zuume, system-ui, sans-serif'
-export const MATCHUP_LOGO_SCALE = 2
+export const MATCHUP_LOGO_SCALE = 1.8
 export const MATCHUP_LOGO_BASE_WIDTH = 300
 export const MATCHUP_LOGO_HEIGHT = 189
 
