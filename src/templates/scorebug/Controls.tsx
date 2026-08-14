@@ -161,6 +161,55 @@ function NumberField({
   )
 }
 
+const LOGO_SCALE_MIN = 0.8
+const LOGO_SCALE_MAX = 3.5
+const LOGO_SCALE_STEP = 0.05
+
+function LogoScaleField({
+  label,
+  value,
+  defaultValue,
+  onChange,
+}: {
+  label: string
+  value: number
+  defaultValue: number
+  onChange: (next: number) => void
+}) {
+  return (
+    <FieldRow label={label}>
+      <div
+        style={{
+          display: 'flex',
+          alignItems: 'center',
+          gap: 6,
+          minWidth: 0,
+          width: '100%',
+        }}
+      >
+        <div style={{ flex: 1, minWidth: 0 }}>
+          <Slider
+            value={value}
+            min={LOGO_SCALE_MIN}
+            max={LOGO_SCALE_MAX}
+            step={LOGO_SCALE_STEP}
+            width="100%"
+            onChange={onChange}
+          />
+        </div>
+        <Button
+          label="Reset"
+          size="sm"
+          disabled={value === defaultValue}
+          title={`Reset to ${defaultValue}`}
+          onClick={() => onChange(defaultValue)}
+          style={{ flexShrink: 0 }}
+        />
+      </div>
+    </FieldRow>
+  )
+}
+
 export default function ScorebugControls({
   props,
   patch,
@@ -325,26 +374,18 @@ export default function ScorebugControls({
           }
         />
       </FieldRow>
-      <FieldRow label="Home logo scale">
-        <Slider
-          value={props.homeLogoScale}
-          min={0.8}
-          max={3.5}
-          step={0.05}
-          width="100%"
-          onChange={(homeLogoScale) => patch({ homeLogoScale })}
-        />
-      </FieldRow>
-      <FieldRow label="Away logo scale">
-        <Slider
-          value={props.awayLogoScale}
-          min={0.8}
-          max={3.5}
-          step={0.05}
-          width="100%"
-          onChange={(awayLogoScale) => patch({ awayLogoScale })}
-        />
-      </FieldRow>
+      <LogoScaleField
+        label="Home logo scale"
+        value={props.homeLogoScale}
+        defaultValue={scorebugDefaults.homeLogoScale}
+        onChange={(homeLogoScale) => patch({ homeLogoScale })}
+      />
+      <LogoScaleField
+        label="Away logo scale"
+        value={props.awayLogoScale}
+        defaultValue={scorebugDefaults.awayLogoScale}
+        onChange={(awayLogoScale) => patch({ awayLogoScale })}
+      />
 
       <Section label="Score" />
       <NumberField
