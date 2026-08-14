@@ -11,6 +11,7 @@ Registered in [`src/templates/registry.ts`](src/templates/registry.ts). The stak
 | id | route |
 |----|-------|
 | `matchup` | `/graphics/p/dtv-2026/matchup` |
+| `basketball-scorebug` | `/graphics/p/dtv-2026/basketball-scorebug` |
 | `score-to-break` | `/graphics/p/dtv-2026/score-to-break` |
 | `talent-single` | `/graphics/p/dtv-2026/talent-single` |
 | `talent-double` | `/graphics/p/dtv-2026/talent-double` |
@@ -52,6 +53,7 @@ After install:
 
 ```
 /graphics/p/dtv-2026/matchup?preview=1
+/graphics/p/dtv-2026/basketball-scorebug?preview=1
 /graphics/p/dtv-2026/score-to-break?preview=1
 /graphics/p/dtv-2026/talent-single?preview=1
 /graphics/p/dtv-2026/talent-double?preview=1

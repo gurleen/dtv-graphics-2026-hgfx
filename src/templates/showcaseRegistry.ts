@@ -16,6 +16,7 @@ type ShowcaseLoader = () => Promise<{ default: ComponentType<ShowcaseProps> }>
  */
 export const showcaseRegistry = {
   matchup: () => import('./matchup/Showcase'),
+  'basketball-scorebug': () => import('./scorebug/Showcase'),
   'score-to-break': () => import('./score-to-break/Showcase'),
   'talent-single': () => import('./talent/single/Showcase'),
   'talent-double': () => import('./talent/double/Showcase'),

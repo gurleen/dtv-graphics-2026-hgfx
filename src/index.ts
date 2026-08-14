@@ -4,10 +4,12 @@ import {
   packageConfigFields,
   packageConfigSchema,
 } from './config'
+import { basketballGameSchema } from './data/basketball'
 import { templateRegistry, type TemplateId } from './templates/registry'
 
 const templates = {
   matchup: defineTemplate(templateRegistry.matchup),
+  'basketball-scorebug': defineTemplate(templateRegistry['basketball-scorebug']),
   'score-to-break': defineTemplate(templateRegistry['score-to-break']),
   'talent-single': defineTemplate(templateRegistry['talent-single']),
   'talent-double': defineTemplate(templateRegistry['talent-double']),
@@ -21,6 +23,9 @@ export default definePackage({
     schema: packageConfigSchema,
     defaults: packageConfigDefaults,
     fields: packageConfigFields,
+  },
+  data: {
+    basketball: basketballGameSchema,
   },
   panels: [
     {

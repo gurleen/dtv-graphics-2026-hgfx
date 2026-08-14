@@ -1,5 +1,11 @@
 import { z } from 'zod'
 import type { FieldDef } from '@hydra-tv/hydra-gfx-runtime/types'
+import {
+  basketballGameDefaults,
+  basketballGameSchema,
+  basketballOverridesDefaults,
+  basketballOverridesSchema,
+} from './data/basketball'
 import { DREXEL_TEAM_ID } from './data/teams'
 
 export const SPORTS = ['mens-basketball', 'womens-basketball', 'wrestling'] as const
@@ -9,6 +15,8 @@ export const packageConfigSchema = z.object({
   sport: z.enum(SPORTS),
   homeTeamId: z.number().int(),
   awayTeamId: z.number().int(),
+  basketball: basketballGameSchema,
+  basketballOverrides: basketballOverridesSchema,
 })
 
 export type PackageConfig = z.infer<typeof packageConfigSchema>
@@ -17,6 +25,8 @@ export const packageConfigDefaults: PackageConfig = {
   sport: 'mens-basketball',
   homeTeamId: DREXEL_TEAM_ID,
   awayTeamId: 0,
+  basketball: basketballGameDefaults,
+  basketballOverrides: basketballOverridesDefaults,
 }
 
 export const packageConfigFields: {
@@ -33,6 +43,10 @@ export const packageConfigFields: {
   },
   homeTeamId: { label: 'Home team ID', type: 'number' },
   awayTeamId: { label: 'Away team ID', type: 'number' },
+}
+
+export function isBasketballSport(sport: Sport): boolean {
+  return sport === 'mens-basketball' || sport === 'womens-basketball'
 }
 
 export function sportLabel(sport: Sport): string {

@@ -5,6 +5,7 @@ import {
   type PackageConfig,
   type Sport,
   SPORTS,
+  isBasketballSport,
   sportLabel,
   sportLogoUrl,
 } from '../config'
@@ -15,21 +16,33 @@ import {
   teamSearchOptions,
   type TeamInfo,
 } from '../data/teams'
+import { BasketballSection } from './BasketballSection'
 
-type Section = 'matchup'
+type Section = 'matchup' | 'basketball'
 type TeamSide = 'home' | 'away'
 
-const SECTION_ITEMS = [{ key: 'matchup', label: 'MATCHUP' }]
-
 /**
- * Package-registered rundown tab — sport + home/away team selection.
- * Appears next to PLAYOUT/… once the rundown attaches `dtv-2026`.
+ * Package-registered rundown tab — sport, home/away teams, and basketball
+ * scorebug backup controls. Appears next to PLAYOUT/… once the rundown
+ * attaches `dtv-2026`.
  */
 export default function SettingsPanel({
   config,
   patchConfig,
+  data,
+  publishData,
 }: PackagePanelProps<PackageConfig>) {
   const [section, setSection] = useState<Section>('matchup')
+  const basketballEnabled = isBasketballSport(config.sport)
+
+  useEffect(() => {
+    if (!basketballEnabled && section === 'basketball') setSection('matchup')
+  }, [basketballEnabled, section])
+
+  const sectionItems = [
+    { key: 'matchup', label: 'MATCHUP' },
+    { key: 'basketball', label: 'BASKETBALL', disabled: !basketballEnabled },
+  ]
 
   return (
     <div
@@ -41,7 +54,7 @@ export default function SettingsPanel({
       }}
     >
       <SideNav
-        items={SECTION_ITEMS}
+        items={sectionItems}
         active={section}
         onChange={(key) => setSection(key as Section)}
         width={120}
@@ -49,6 +62,14 @@ export default function SettingsPanel({
       <div style={{ flex: 1, minWidth: 0, padding: 16 }}>
         {section === 'matchup' ? (
           <MatchupSection config={config} patchConfig={patchConfig} />
+        ) : null}
+        {section === 'basketball' && basketballEnabled ? (
+          <BasketballSection
+            config={config}
+            patchConfig={patchConfig}
+            data={data}
+            publishData={publishData}
+          />
         ) : null}
       </div>
     </div>

@@ -2,6 +2,8 @@ import { useState } from 'react'
 import { createRoot } from 'react-dom/client'
 import { MATCHUP_LOGO_SCALE } from '../src/templates/matchup/Layout'
 import MatchupShowcase from '../src/templates/matchup/Showcase'
+import { SCOREBUG_LOGO_SCALE } from '../src/templates/scorebug/Layout'
+import ScorebugShowcase from '../src/templates/scorebug/Showcase'
 import { STB_LOGO_SCALE } from '../src/templates/score-to-break/Layout'
 import ScoreToBreakShowcase from '../src/templates/score-to-break/Showcase'
 import TalentSingleShowcase from '../src/templates/talent/single/Showcase'
@@ -39,6 +41,8 @@ function Demo() {
   const [matchupAwayScale, setMatchupAwayScale] = useState(MATCHUP_LOGO_SCALE)
   const [stbHomeScale, setStbHomeScale] = useState(STB_LOGO_SCALE)
   const [stbAwayScale, setStbAwayScale] = useState(STB_LOGO_SCALE)
+  const [scorebugHomeScale, setScorebugHomeScale] = useState(SCOREBUG_LOGO_SCALE)
+  const [scorebugAwayScale, setScorebugAwayScale] = useState(SCOREBUG_LOGO_SCALE)
 
   return (
     <div
@@ -55,9 +59,10 @@ function Demo() {
       </h1>
       <p style={{ color: '#9aa0a6', margin: '0 0 40px', maxWidth: 720, lineHeight: 1.5 }}>
         CAA wordmark draws in with a glow, then slams into the conference box.
-        Score to break rows slam from the center, then logos and scores slide
-        in. Talent panels use clipped plate motion with sheen on every plate.
-        Use the IN / OUT switch to take any graphic.
+        The basketball scorebug slides in from the sides with clock chrome in
+        the middle. Score to break rows slam from the center, then logos and
+        scores slide in. Talent panels use clipped plate motion with sheen on
+        every plate. Use the IN / OUT switch to take any graphic.
       </p>
 
       <section style={{ marginBottom: 56 }}>
@@ -75,6 +80,26 @@ function Demo() {
         <MatchupShowcase
           homeLogoScale={matchupHomeScale}
           awayLogoScale={matchupAwayScale}
+        />
+      </section>
+
+      <section style={{ marginBottom: 56 }}>
+        <h2 style={{ fontSize: 20, fontWeight: 700, margin: '0 0 12px' }}>
+          Basketball scorebug
+        </h2>
+        <ScaleSlider
+          label="homeLogoScale"
+          value={scorebugHomeScale}
+          onChange={setScorebugHomeScale}
+        />
+        <ScaleSlider
+          label="awayLogoScale"
+          value={scorebugAwayScale}
+          onChange={setScorebugAwayScale}
+        />
+        <ScorebugShowcase
+          homeLogoScale={scorebugHomeScale}
+          awayLogoScale={scorebugAwayScale}
         />
       </section>
 

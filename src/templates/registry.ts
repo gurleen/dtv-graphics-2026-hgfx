@@ -1,4 +1,5 @@
 import { matchupTemplateSchema } from './matchup/schema'
+import { scorebugTemplateSchema } from './scorebug/schema'
 import { scoreToBreakTemplateSchema } from './score-to-break/schema'
 import { talentDoubleTemplateSchema } from './talent/double/schema'
 import { talentSingleTemplateSchema } from './talent/single/schema'
@@ -15,6 +16,10 @@ export const templateRegistry = {
   matchup: {
     ...matchupTemplateSchema,
     Render: () => import('./matchup/Graphic'),
+  },
+  'basketball-scorebug': {
+    ...scorebugTemplateSchema,
+    Render: () => import('./scorebug/Graphic'),
   },
   'score-to-break': {
     ...scoreToBreakTemplateSchema,
