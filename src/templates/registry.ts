@@ -20,6 +20,8 @@ export const templateRegistry = {
   'basketball-scorebug': {
     ...scorebugTemplateSchema,
     Render: () => import('./scorebug/Graphic'),
+    Controls: () => import('./scorebug/Controls'),
+    PreviewControls: () => import('./scorebug/Controls'),
   },
   'score-to-break': {
     ...scoreToBreakTemplateSchema,
